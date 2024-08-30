@@ -1,21 +1,49 @@
 {
   "name": "ember-productivity",
   "displayName": "Ember Productivity",
-  "description": "",
+  "description": "A VSCode extension for enhancing Ember.js development productivity.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.92.0"
   },
   "categories": [
-    "Other"
+    "Extension Packs"
+  ],
+  "keywords": [
+    "ember",
+    "ember-cli",
+    "ember-productivity",
+    "productivity",
+    "Ember files Switch",
+    "Ember Related Files"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "ember-productivity.helloWorld",
-        "title": "Hello World"
+        "command": "ember-productivity.switchRelatedFiles",
+        "title": "Switch Related Files"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ember-productivity.switchRelatedFiles",
+        "key": "cmd+alt+r",
+        "mac": "cmd+alt+r",
+        "win": "ctrl+alt+r",
+        "linux": "ctrl+alt+r",
+        "when": "editorTextFocus"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./src/snippets/snippets.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./src/snippets/snippets.json"
       }
     ]
   },

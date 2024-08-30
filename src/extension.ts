@@ -1,26 +1,77 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import path from "path";
+import { getRelatedFiles } from "./related-files";
+import { COMMANDS } from "./constants";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+/**
+ * @param context The extension context
+ */
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "ember-productivity" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('ember-productivity.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Ember Productivity!');
-	});
-
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      COMMANDS.SWITCH_RELATED_FILES,
+      switchRelatedFiles
+    )
+  );
 }
 
-// This method is called when your extension is deactivated
+/**
+ * Handles the logic for switching related files.
+ */
+async function switchRelatedFiles() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showErrorMessage("No file is currently open.");
+    return;
+  }
+
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+  if (!workspaceFolder) {
+    vscode.window.showErrorMessage("Workspace folder not found.");
+    return;
+  }
+
+  const currentFilePath = editor.document.uri.fsPath;
+  const currentFileDir = path.dirname(currentFilePath);
+  const currentFileName = path.basename(currentFilePath);
+
+  const relatedFiles = getRelatedFiles(currentFileDir, currentFileName);
+
+  if (relatedFiles.length === 0) {
+    vscode.window.showInformationMessage("No related files found.");
+    return;
+  }
+
+  if (relatedFiles.length === 1) {
+    openFile(relatedFiles[0].path);
+    return;
+  }
+
+  const selectedFileLabel = await vscode.window.showQuickPick(
+    relatedFiles.map((file) => file.label),
+    { placeHolder: "Select a file to switch to" }
+  );
+
+  if (selectedFileLabel) {
+    const selectedFile = relatedFiles.find(
+      (file) => file.label === selectedFileLabel
+    );
+    if (selectedFile) {
+      openFile(selectedFile.path);
+    }
+  }
+}
+
+/**
+ * Opens a file in the editor.
+ * @param filePath The path to the file
+ */
+async function openFile(filePath: string) {
+  const document = await vscode.workspace.openTextDocument(filePath);
+  vscode.window.showTextDocument(document);
+}
+
+/**
+ * This method is called when your extension is deactivated
+ */
 export function deactivate() {}
