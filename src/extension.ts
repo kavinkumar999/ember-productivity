@@ -49,7 +49,7 @@ async function switchRelatedFiles() {
 
   const selectedFileLabel = await vscode.window.showQuickPick(
     relatedFiles.map((file) => file.label),
-    { placeHolder: "Select a file to switch to" }
+    { placeHolder: "Select a file" }
   );
 
   if (selectedFileLabel) {
