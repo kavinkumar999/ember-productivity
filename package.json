@@ -32,8 +32,7 @@
         "key": "cmd+alt+r",
         "mac": "cmd+alt+r",
         "win": "ctrl+alt+r",
-        "linux": "ctrl+alt+r",
-        "when": "editorTextFocus"
+        "linux": "ctrl+alt+r"
       }
     ],
     "snippets": [
