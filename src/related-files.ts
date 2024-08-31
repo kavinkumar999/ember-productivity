@@ -21,19 +21,19 @@ const cache: { [key: string]: Array<TypeItem> } = {};
 /**
  * Retrieves related files from the cache or computes them if not cached.
  * @param dir Directory to search in
- * @param fileName Name of the current file
+ * @param file Name of the current file
  * @returns Array of related files
  */
-export function findRelatedFiles(dir: string, fileName: string, basePath: string): Array<TypeItem> {
-  const cacheKey = `${dir}/${fileName}`;
+export function findRelatedFiles(dir: string, file: string, basePath: string): Array<TypeItem> {
+  const cacheKey = `${dir}/${file}`;
 
   if (cache[cacheKey]) {
     return cache[cacheKey];
   }
 
-  const relatedFiles = isPods(fileName) ? findRelatedFilesInPods(dir, fileName) : findRelatedFilesInClassic(dir, fileName);
+  const relatedFiles = isPods(file) ? findRelatedFilesInPods(dir, file) : findRelatedFilesInClassic(dir, file);
   let items = relatedFiles.map(
-    (file) => new TypeItem(file, file.path, basePath)
+    (item) => new TypeItem(item, item.path, basePath)
   );
 
   cache[cacheKey] = items;
@@ -44,17 +44,17 @@ export function findRelatedFiles(dir: string, fileName: string, basePath: string
 /**
  * Finds related files within the Pods structure.
  * @param dir Directory to search in
- * @param fileName Name of the current file
+ * @param file Name of the current file
  * @returns Array of related files
  */
-function findRelatedFilesInPods(dir: string, fileName: string): Array<RelatedFiles> {
-  const fileArgPrefix = prefixName(fileName);
+function findRelatedFilesInPods(dir: string, file: string): Array<RelatedFiles> {
+  const fileArgPrefix = prefixName(file);
 
   return fs.readdirSync(dir, 'utf-8')
     .filter((item) => {
       const baseName = path.basename(item);
       const filePrefix = prefixName(baseName);
-      return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && fileName !== baseName;
+      return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && file !== baseName;
     })
     .map((file) => ({
       label: file,
@@ -65,12 +65,12 @@ function findRelatedFilesInPods(dir: string, fileName: string): Array<RelatedFil
 /**
  * Finds related files within the Classic structure.
  * @param dir Directory to search in
- * @param fileName Name of the current file
+ * @param file Name of the current file
  * @returns Array of related files
  */
-function findRelatedFilesInClassic(dir: string, fileName: string): Array<RelatedFiles> {
-  const module = getModule(dir);
-  const prefix = prefixName(fileName);
+function findRelatedFilesInClassic(dir: string, file: string): Array<RelatedFiles> {
+  const module = findModule(dir);
+  const prefix = prefixName(file);
   if (!module) {
     return [];
   }
@@ -79,14 +79,14 @@ function findRelatedFilesInClassic(dir: string, fileName: string): Array<Related
   const relatedFiles: Array<{ label: string; path: string }> = [];
 
   searchingFiles.forEach(_module => {
-    const moduleDir = getModuleDirectory(dir, module, _module);
+    const moduleDir = findModuleDirectory(dir, module, _module);
 
     if (fs.existsSync(moduleDir)) {
       relatedFiles.push(
         ...fs.readdirSync(moduleDir, 'utf-8')
-          .filter(file => prefixName(path.basename(file)) === prefix)
-          .map(file => ({
-            label: file,
+          .filter(item => prefixName(path.basename(item)) === prefix)
+          .map(_file => ({
+            label: _file,
             path: moduleDir,
           }))
       );
@@ -101,7 +101,7 @@ function findRelatedFilesInClassic(dir: string, fileName: string): Array<Related
  * @param dir Directory path
  * @returns Module type or null if not found
  */
-function getModule(dir: string): string | null {
+function findModule(dir: string): string | null {
   const paths = dir.split(path.sep);
   return Object.keys(MODULES_FOR_SEARCH).find(module => paths.includes(module)) || null;
 }
@@ -113,7 +113,7 @@ function getModule(dir: string): string | null {
  * @param _module Target module type
  * @returns Constructed directory path
  */
-function getModuleDirectory(dir: string, module: string, _module: string): string {
+function findModuleDirectory(dir: string, module: string, _module: string): string {
   if (module === 'components' && _module === 'templates') {
     return dir.replace(module, _module + "/components");
   } else if (module === 'templates' && _module === 'components') {

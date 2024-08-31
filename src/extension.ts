@@ -3,7 +3,6 @@ import path from "path";
 import { findRelatedFiles } from "./related-files";
 import { COMMANDS } from "./constants";
 
-
 export interface RelatedFiles {
 	label: string;
 	path: string;
@@ -35,7 +34,6 @@ export class TypeItem implements QuickPickItem {
     return Uri.file(this.getPath());
   }
 }
-
 
 /**
  * @param context The extension context
