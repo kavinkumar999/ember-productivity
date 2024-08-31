@@ -1,6 +1,6 @@
 import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri } from "vscode";
 import path from "path";
-import { findRelatedFiles } from "./relatedfiles";
+import { findRelatedFiles } from "./related-files";
 import { COMMANDS } from "./constants";
 
 export interface RelatedFiles {
