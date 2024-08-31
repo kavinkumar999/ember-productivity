@@ -61,17 +61,17 @@ function findRelatedFilesInClassic(dir: string, file: string): Array<RelatedFile
   const relatedFiles: Array<RelatedFiles> = [];
 
   searchingFiles.forEach(_module => {
-    const moduleDir = findModuleDirectory(dir, module, _module);
+    const _dir = findModuleDirectory(dir, module, _module);
 
-    if (fs.existsSync(moduleDir)) {
+    if (fs.existsSync(_dir)) {
       relatedFiles.push(
         ...fs
-          .readdirSync(moduleDir, "utf-8")
-          .filter((item) => prefixName(path.basename(item)) === prefix)
+          .readdirSync(_dir, "utf-8")
+          .filter((item) => prefixName(path.basename(item)) === prefix && fs.statSync(path.join(_dir, item)).isFile())
           .map((_file) => ({
             label: _module,
             file: _file,
-            path: path.join(moduleDir, _file),
+            path: path.join(_dir, _file),
           }))
       );
     }
