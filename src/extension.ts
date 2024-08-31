@@ -1,14 +1,48 @@
-import * as vscode from "vscode";
+import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri } from "vscode";
 import path from "path";
-import { getRelatedFiles } from "./related-files";
+import { findRelatedFiles } from "./related-files";
 import { COMMANDS } from "./constants";
+
+
+export interface RelatedFiles {
+	label: string;
+	path: string;
+}
+
+export class TypeItem implements QuickPickItem {
+  label: string;
+  rootPath: string;
+  description: string | undefined;
+  detail?: string | undefined;
+
+  constructor(
+    item: RelatedFiles,
+    rootPath: string,
+    basePath: string,
+    detail?: string | undefined
+  ) {
+    this.label = item.label;
+    this.rootPath = rootPath;
+    this.description = path.relative(basePath, path.join(rootPath, item.label));
+    this.detail = detail;
+  }
+
+  public getPath(): string {
+		return path.join(this.rootPath, this.label);
+  }
+
+  public uri(): Uri {
+    return Uri.file(this.getPath());
+  }
+}
+
 
 /**
  * @param context The extension context
  */
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand(
+    commands.registerCommand(
       COMMANDS.SWITCH_RELATED_FILES,
       switchRelatedFiles
     )
@@ -19,15 +53,15 @@ export function activate(context: vscode.ExtensionContext) {
  * Handles the logic for switching related files.
  */
 async function switchRelatedFiles() {
-  const editor = vscode.window.activeTextEditor;
+  const editor = window.activeTextEditor;
   if (!editor) {
-    vscode.window.showErrorMessage("No file is currently open.");
+    window.showErrorMessage("No file is currently open.");
     return;
   }
 
-  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  if (!workspaceFolder) {
-    vscode.window.showErrorMessage("Workspace folder not found.");
+  const basePath = workspace.workspaceFolders?.[0]?.uri.fsPath;
+  if (!basePath) {
+    window.showErrorMessage("Workspace folder not found.");
     return;
   }
 
@@ -35,42 +69,37 @@ async function switchRelatedFiles() {
   const currentFileDir = path.dirname(currentFilePath);
   const currentFileName = path.basename(currentFilePath);
 
-  const relatedFiles = getRelatedFiles(currentFileDir, currentFileName);
+	const files = findRelatedFiles(currentFileDir, currentFileName, basePath);
 
-  if (relatedFiles.length === 0) {
-    vscode.window.showInformationMessage("No related files found.");
+  if (files.length === 0) {
+    window.showInformationMessage("No related files found.");
     return;
   }
 
-  if (relatedFiles.length === 1) {
-    openFile(relatedFiles[0].path);
+  if (files.length === 1) {
+    open(files[0]);
     return;
   }
 
-  const selectedFileLabel = await vscode.window.showQuickPick(
-    relatedFiles.map((file) => file.label),
-    { placeHolder: "Select a file" }
-  );
+	window.showQuickPick(files as TypeItem[], {
+      placeHolder: "Select File",
+      matchOnDescription: true,
+    })
+    .then((item) => {
+      if (item) {
+        open(item);
+      }
+    });
+}
 
-  if (selectedFileLabel) {
-    const selectedFile = relatedFiles.find(
-      (file) => file.label === selectedFileLabel
+function open(item: TypeItem) {
+  workspace.openTextDocument(item.uri())
+    .then((doc) =>
+      window.showTextDocument(doc.uri, {
+        preview: true
+      })
     );
-    if (selectedFile) {
-      openFile(selectedFile.path);
-    }
-  }
 }
-
-/**
- * Opens a file in the editor.
- * @param filePath The path to the file
- */
-async function openFile(filePath: string) {
-  const document = await vscode.workspace.openTextDocument(filePath);
-  vscode.window.showTextDocument(document);
-}
-
 /**
  * This method is called when your extension is deactivated
  */

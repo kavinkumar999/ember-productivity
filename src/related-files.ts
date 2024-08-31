@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { TypeItem, RelatedFiles } from './extension';
 
 const POD_GROUP_FILES = ['route.js', 'route.ts', 'controller.js', 'controller.ts', 'template.hbs', 'component.js', 'component.ts'];
 
@@ -14,7 +15,8 @@ const MODULES_FOR_SEARCH: ModuleSearch = {
   "components": ["templates"]
 };
 
-const cache: { [key: string]: Array<{ label: string; path: string }> } = {};
+const cache: { [key: string]: Array<TypeItem> } = {};
+
 
 /**
  * Retrieves related files from the cache or computes them if not cached.
@@ -22,18 +24,21 @@ const cache: { [key: string]: Array<{ label: string; path: string }> } = {};
  * @param fileName Name of the current file
  * @returns Array of related files
  */
-export function getRelatedFiles(dir: string, fileName: string): Array<{ label: string; path: string }> {
-  const cacheKey = `${dir}:${fileName}`;
+export function findRelatedFiles(dir: string, fileName: string, basePath: string): Array<TypeItem> {
+  const cacheKey = `${dir}/${fileName}`;
 
   if (cache[cacheKey]) {
     return cache[cacheKey];
   }
 
-  const isPodsFile = POD_GROUP_FILES.includes(fileName);
-  const relatedFiles = isPodsFile ? findRelatedFilesInPods(dir, fileName) : findRelatedFilesInClassic(dir, fileName);
+  const relatedFiles = isPods(fileName) ? findRelatedFilesInPods(dir, fileName) : findRelatedFilesInClassic(dir, fileName);
+  let items = relatedFiles.map(
+    (file) => new TypeItem(file, file.path, basePath)
+  );
 
-  cache[cacheKey] = relatedFiles;
-  return relatedFiles;
+  cache[cacheKey] = items;
+  return items;
+
 }
 
 /**
@@ -42,18 +47,18 @@ export function getRelatedFiles(dir: string, fileName: string): Array<{ label: s
  * @param fileName Name of the current file
  * @returns Array of related files
  */
-function findRelatedFilesInPods(dir: string, fileName: string): Array<{ label: string; path: string }> {
-  const fileArgPrefix = getPrefixName(fileName);
+function findRelatedFilesInPods(dir: string, fileName: string): Array<RelatedFiles> {
+  const fileArgPrefix = prefixName(fileName);
 
   return fs.readdirSync(dir, 'utf-8')
-    .filter(file => {
-      const baseName = path.basename(file);
-      const filePrefix = getPrefixName(baseName);
+    .filter((item) => {
+      const baseName = path.basename(item);
+      const filePrefix = prefixName(baseName);
       return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && fileName !== baseName;
     })
-    .map(file => ({
+    .map((file) => ({
       label: file,
-      path: path.join(dir, file),
+      path: dir,
     }));
 }
 
@@ -63,9 +68,9 @@ function findRelatedFilesInPods(dir: string, fileName: string): Array<{ label: s
  * @param fileName Name of the current file
  * @returns Array of related files
  */
-function findRelatedFilesInClassic(dir: string, fileName: string): Array<{ label: string; path: string }> {
+function findRelatedFilesInClassic(dir: string, fileName: string): Array<RelatedFiles> {
   const module = getModule(dir);
-  const prefix = getPrefixName(fileName);
+  const prefix = prefixName(fileName);
   if (!module) {
     return [];
   }
@@ -79,10 +84,10 @@ function findRelatedFilesInClassic(dir: string, fileName: string): Array<{ label
     if (fs.existsSync(moduleDir)) {
       relatedFiles.push(
         ...fs.readdirSync(moduleDir, 'utf-8')
-          .filter(file => getPrefixName(path.basename(file)) === prefix)
+          .filter(file => prefixName(path.basename(file)) === prefix)
           .map(file => ({
-            label: _module,
-            path: path.join(moduleDir, file)
+            label: file,
+            path: moduleDir,
           }))
       );
     }
@@ -130,9 +135,13 @@ export function isFilesRelated(file: string): boolean {
 
 /**
  * Extracts the prefix of a file name (e.g., the name before the first dot).
- * @param fileName File name
+ * @param file File name
  * @returns Extracted prefix or an empty string if none found
  */
-export function getPrefixName(fileName = ''): string {
-  return fileName.split('.')[0] || '';
+export function prefixName(file = ''): string {
+  return file.split('.')[0] || '';
+}
+
+function isPods(file: string): boolean {
+  return POD_GROUP_FILES.includes(file);
 }
