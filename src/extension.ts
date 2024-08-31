@@ -4,7 +4,8 @@ import { findRelatedFiles } from "./related-files";
 import { COMMANDS } from "./constants";
 
 export interface RelatedFiles {
-	label: string;
+  label: string;
+  file: string,
 	path: string;
 }
 
@@ -22,12 +23,12 @@ export class TypeItem implements QuickPickItem {
   ) {
     this.label = item.label;
     this.rootPath = rootPath;
-    this.description = path.relative(basePath, path.join(rootPath, item.label));
+    this.description = path.relative(basePath, rootPath);
     this.detail = detail;
   }
 
   public getPath(): string {
-		return path.join(this.rootPath, this.label);
+		return this.rootPath;
   }
 
   public uri(): Uri {

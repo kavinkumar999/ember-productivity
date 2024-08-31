@@ -58,7 +58,8 @@ function findRelatedFilesInPods(dir: string, file: string): Array<RelatedFiles> 
     })
     .map((file) => ({
       label: file,
-      path: dir,
+      file: file,
+      path: path.join(dir, file),
     }));
 }
 
@@ -76,18 +77,20 @@ function findRelatedFilesInClassic(dir: string, file: string): Array<RelatedFile
   }
 
   const searchingFiles = MODULES_FOR_SEARCH[module];
-  const relatedFiles: Array<{ label: string; path: string }> = [];
+  const relatedFiles: Array<RelatedFiles> = [];
 
   searchingFiles.forEach(_module => {
     const moduleDir = findModuleDirectory(dir, module, _module);
 
     if (fs.existsSync(moduleDir)) {
       relatedFiles.push(
-        ...fs.readdirSync(moduleDir, 'utf-8')
-          .filter(item => prefixName(path.basename(item)) === prefix)
-          .map(_file => ({
-            label: _file,
-            path: moduleDir,
+        ...fs
+          .readdirSync(moduleDir, "utf-8")
+          .filter((item) => prefixName(path.basename(item)) === prefix)
+          .map((_file) => ({
+            label: _module,
+            file: _file,
+            path: path.join(moduleDir, _file),
           }))
       );
     }
