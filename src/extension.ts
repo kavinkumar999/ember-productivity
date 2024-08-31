@@ -1,6 +1,6 @@
 import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri } from "vscode";
 import path from "path";
-import { findRelatedFiles } from "./related-files";
+import { findRelatedFiles } from "./relatedfiles";
 import { COMMANDS } from "./constants";
 
 export interface RelatedFiles {
@@ -36,9 +36,6 @@ export class TypeItem implements QuickPickItem {
   }
 }
 
-/**
- * @param context The extension context
- */
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(
@@ -48,9 +45,6 @@ export function activate(context: ExtensionContext) {
   );
 }
 
-/**
- * Handles the logic for switching related files.
- */
 async function switchRelatedFiles() {
   const editor = window.activeTextEditor;
   if (!editor) {
@@ -99,7 +93,5 @@ function open(item: TypeItem) {
       })
     );
 }
-/**
- * This method is called when your extension is deactivated
- */
+
 export function deactivate() {}
