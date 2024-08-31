@@ -17,7 +17,6 @@ const MODULES_FOR_SEARCH: ModuleSearch = {
 
 const cache: { [key: string]: Array<TypeItem> } = {};
 
-
 export function findRelatedFiles(dir: string, file: string, basePath: string): Array<TypeItem> {
   const cacheKey = `${dir}/${file}`;
 
@@ -86,7 +85,6 @@ function findModule(dir: string): string | null {
   return Object.keys(MODULES_FOR_SEARCH).find(module => paths.includes(module)) || null;
 }
 
-
 function findModuleDirectory(dir: string, module: string, _module: string): string {
   if (module === 'components' && _module === 'templates') {
     return dir.replace(module, _module + "/components");
@@ -97,17 +95,14 @@ function findModuleDirectory(dir: string, module: string, _module: string): stri
   }
 }
 
-
 function isFilesRelated(file: string): boolean {
   const relatedFiles = ['route.js', 'template.hbs', 'controller.js', 'component.js'];
   return relatedFiles.includes(file);
 }
 
-
 function prefixName(file = ''): string {
   return file.split('.')[0] || '';
 }
-
 
 function isPods(file: string): boolean {
   return POD_GROUP_FILES.includes(file);
