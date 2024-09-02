@@ -1,71 +1,115 @@
-# ember-productivity README
+# Ember Productivity
 
-This is the README for your extension "ember-productivity". After writing up a brief description, we recommend including the following sections.
+This extension provides a collection of Ember JS and Handlebars snippets for the [Visual Studio Code][code] editor. It also supports easy switching between related Ember files and layouts.
 
-## Features
+## Switch Related Files
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Default Keybindings for Ember Productivity Addon
 
-For example if there is an image subfolder under your extension project workspace:
+The Ember Productivity Addon includes keybindings to easily switch between related files:
 
-\!\[feature X\]\(images/feature-x.png\)
+- **Mac:** `Cmd + Alt + R`
+- **Win/Linux:** `Ctrl + Alt + R`
+  
+### File Switches
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- **Route → Controller → Template**
+- **Component → Template**
+  
+## Supported Layou
 
-## Requirements
+- **Classic**
+- **Pods**
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Supported Languages (File Extensions)
 
-## Extension Settings
+* JavaScript (.js)
+* TypeScript (.ts)
+* Handlebars (.hbs)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Handlebars Snippets
 
-For example:
+Below is a list of all available Handlebars snippets and their triggers. The **⇥** represents the `TAB` key.
 
-This extension contributes the following settings:
+### Handlebars Helpers
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+| Trigger         | Content                                            |
+| --------------- | -------------------------------------------------- |
+| `get`           | `{{get ${1:object} "${2:property}"}}`             |
+| `act`           | `{{action "${1:actionName}"}}`                     |
+| `act1`          | `{{action "${1:name}" ${2:param}}}`               |
+| `log`           | `{{log ${1:var}}}`                                |
+| `linkto`        | `<LinkTo @route="${1:route}"> ${2} </LinkTo>`     |
+| `inif`          | `{{if ${1:condition} "${2:true-output}" "${3:false-output}"}}` |
+| `inun`          | `{{unless ${1:condition} "${2:true-output}" "${3:false-output}"}}` |
+| `if`            | `{{#if ${1:condition}}} ${2} {{/if}}`             |
+| `un`            | `{{#unless ${1:condition}}} ${2} {{/unless}}`     |
+| `ifel`          | `{{#if ${1:condition}}} ${2} {{else}} ${3} {{/if}}` |
+| `unel`          | `{{#unless ${1:condition}}} ${2} {{else}} ${3} {{/unless}}` |
+| `ifelif`        | `{{#if ${1:condition1}}} ${2} {{else if ${3:condition2}}} ${4} {{/if}}` |
+| `each`          | `{{#each ${1:list} as |${2:item}|}} ${3} {{/each}}` |
+| `eachx`         | `{{#each ${1:list} as |${2:item} ${3:index}|}} ${4} {{/each}}` |
+| `eachin`        | `{{#each-in ${1:object} as |${2:key} ${3:value}|}} ${4} {{/each-in}}` |
+| `eachinel`      | `{{#each-in ${1:object} as |${2:key} ${3:value}|}} ${4} {{else}} ${5} {{/each-in}}` |
+| `comp`          | `<${1:component} @${2:arg1}="${3:value1}" @${4:arg2}="${5:value2}"> ${6} </${1:component}>` |
+| `yield`         | `{{yield ${1:defaultContent}}}`                   |
+| `concat`        | `{{concat ${1:string1} ${2:string2}}}`            |
 
-## Known Issues
+## JavaScript (ES6) Snippets
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Below is a list of all available JavaScript snippets and their triggers. The **⇥** represents the `TAB` key.
 
-## Release Notes
+### Functions
 
-Users appreciate release notes as you update your extension.
+| Trigger         | Content                                             |
+| --------------- | --------------------------------------------------- |
+| `func`          | `function ${1:functionName}() { ${2} }`           |
+| `func1`         | `function ${1:functionName}(${2:param}) { ${3} }` |
+| `func2`         | `function ${1:functionName}(${2:param1}, ${3:param2}) { ${4} }` |
+| `func3`         | `function ${1:functionName}(${2:param1}, ${3:param2}, ${4:param3}) { ${5} }` |
 
-### 1.0.0
+### Computed Properties
 
-Initial release of ...
+| Trigger         | Content                                             |
+| --------------- | --------------------------------------------------- |
+| `cu`            | `${1:computedPropertyName}: computed('${2:propertyToBeWatched}', function() { return ${3}; })` |
+| `cugs`          | `${1:computedPropertyName}: computed('${2:propertyToBeWatched}', { get() { ${3} }, set(key, value) { ${4} } })` |
 
-### 1.0.1
+### Imports
 
-Fixed issue #.
+| Trigger         | Content                                             |
+| --------------- | --------------------------------------------------- |
+| `imp rsvp`      | `import { ${1:module} } from '@ember/rsvp';`       |
+| `imp utils`     | `import { ${1:module} } from '@ember/utils';`      |
+| `imp service`   | `import { service } from '@ember/service';`        |
+| `imp object`    | `import { ${1:module} } from '@ember/object';`     |
+| `imp comp`      | `import { ${1:module} } from '@ember/object/computed';` |
 
-### 1.1.0
+### Class Methods
 
-Added features X, Y, and Z.
+| Trigger         | Content                                             |
+| --------------- | --------------------------------------------------- |
+| `efunc`         | `${1:methodName}() { ${2} }`                       |
+| `efunc1`        | `${1:methodName}(${2:param}) { ${3} }`             |
+| `efunc2`        | `${1:methodName}(${2:param1}, ${3:param2}) { ${4} }` |
+| `efunc3`        | `${1:methodName}(${2:param1}, ${3:param2}, ${4:param3}) { ${5} }` |
 
----
+### Ember Components & Classes
 
-## Following extension guidelines
+| Trigger         | Content                                             |
+| --------------- | --------------------------------------------------- |
+| `comp-g`        | `import Component from '@glimmer/component'; export default class ${1:ComponentName} extends Component { ${2} }` |
+| `comp`          | `import Component from '@ember/component'; export default Component.extend({ ${1} });` |
+| `route-g`       | `import Route from '@ember/routing/route'; export default class ${1:RouteName} extends Route { model() { ${2} } }` |
+| `route`         | `import Route from '@ember/routing/route'; export default Route.extend({ model() { ${1} } });` |
+| `service-g`     | `import Service from '@ember/service'; export default class ${1:ServiceName} extends Service { ${2} }` |
+| `service`       | `import Service from '@ember/service'; export default Service.extend({ ${1} });` |
+| `controller-g`  | `import Controller from '@ember/controller'; export default class ${1:ControllerName} extends Controller { ${2} }` |
+| `controller`    | `import Controller from '@ember/controller'; export default Controller.extend({ ${1} });` |
+| `comp-ts`       | `import Component from '@glimmer/component'; interface ${1:ComponentName}Args { // Define your component arguments here } export default class ${1:ComponentName} extends Component<${1:ComponentName}Args> { // Component logic here }` |
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Contribute
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+Contributions are welcome! Feel free to submit more snippets or modify existing ones.
 
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[code]: https://code.visualstudio.com/
