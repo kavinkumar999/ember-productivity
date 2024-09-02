@@ -4,7 +4,8 @@ This extension provides a collection of Ember JS and Handlebars snippets for the
 
 ## Switch Related Files
 
-![Switch Related Files](images/switch-files.gif)
+![Switch Related Files](https://raw.githubusercontent.com/kavinkumar999/ember-productivity/main/images/switch-files.gif)
+
 ### Default Keybindings for Ember Productivity Addon
 
 The Ember Productivity Addon includes keybindings to easily switch between related files:
@@ -32,7 +33,7 @@ The Ember Productivity Addon includes keybindings to easily switch between relat
 
 Below is a list of all available Handlebars snippets and their triggers. The **⇥** represents the `TAB` key.
 
-![code-snippets](images/snippets.gif)
+![code-snippets](https://raw.githubusercontent.com/kavinkumar999/ember-productivity/main/images/snippets.gif)
 
 ### Handlebars Helpers
 
