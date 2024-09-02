@@ -23,8 +23,17 @@ export function findRelatedFiles(dir: string, file: string, basePath: string): A
   if (cache[cacheKey]) {
     return cache[cacheKey];
   }
+  let relatedFiles: Array<RelatedFiles> = [];
 
-  const relatedFiles = isPods(file) ? findRelatedFilesInPods(dir, file) : findRelatedFilesInClassic(dir, file);
+  if (findModule(dir) === 'components') {
+    relatedFiles = relatedFiles.concat(
+      findRelatedFilesInPodsOrFlat(dir, file),
+      findRelatedFilesInClassic(dir, file),
+    );
+  } else {
+    relatedFiles = isPods(file) ? findRelatedFilesInPodsOrFlat(dir, file) : findRelatedFilesInClassic(dir, file);
+  }
+
   let items = relatedFiles.map(
     (item) => new TypeItem(item, item.path, basePath)
   );
@@ -34,7 +43,7 @@ export function findRelatedFiles(dir: string, file: string, basePath: string): A
 
 }
 
-function findRelatedFilesInPods(dir: string, file: string): Array<RelatedFiles> {
+function findRelatedFilesInPodsOrFlat(dir: string, file: string): Array<RelatedFiles> {
   const fileArgPrefix = prefixName(file);
 
   return fs.readdirSync(dir, 'utf-8')
