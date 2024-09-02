@@ -3,6 +3,7 @@
   "displayName": "Ember Productivity",
   "description": "A VSCode extension for enhancing Ember.js development productivity.",
   "version": "0.0.1",
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -14,6 +15,7 @@
     "ember-cli",
     "ember-productivity",
     "productivity",
+    "Ember snippets",
     "Ember files Switch",
     "Ember Related Files"
   ],
