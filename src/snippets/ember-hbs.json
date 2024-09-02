@@ -1,0 +1,182 @@
+{
+  "getHelper": {
+    "prefix": "get",
+    "body": [
+      "{{get ${1:object} \"${2:property}\"}}"
+    ],
+    "description": "Get a property from an object"
+  },
+  
+  "actionHelper": {
+    "prefix": "act",
+    "body": [
+      "{{action \"${1:actionName}\"}}"
+    ],
+    "description": "Call an action without parameters"
+  },
+  
+  "actionHelperOneParam": {
+    "prefix": "act1",
+    "body": [
+      "{{action \"${1:name}\" ${2:param}}}"
+    ],
+    "description": "Call an action with one parameter"
+  },
+  
+  "logHelper": {
+    "prefix": "log",
+    "body": [
+      "{{log ${1:var}}}"
+    ],
+    "description": "Log a variable to the console"
+  },
+  
+  "linkToHelper": {
+    "prefix": "linkto",
+    "body": [
+      "<LinkTo @route=\"${1:route}\">",
+      "\t${2}",
+      "</LinkTo>"
+    ],
+    "description": "Create a link-to component"
+  },
+
+  "inlineIf": {
+    "prefix": "inif",
+    "body": [
+      "{{if ${1:condition} \"${2:true-output}\" \"${3:false-output}\"}}"
+    ],
+    "description": "Inline if helper"
+  },
+  
+  "inlineUnless": {
+    "prefix": "inun",
+    "body": [
+      "{{unless ${1:condition} \"${2:true-output}\" \"${3:false-output}\"}}"
+    ],
+    "description": "Inline unless helper"
+  },
+  
+  "blockIf": {
+    "prefix": "if",
+    "body": [
+      "{{#if ${1:condition}}}",
+      "\t${2}",
+      "{{/if}}"
+    ],
+    "description": "Block if helper"
+  },
+  
+  "blockUnless": {
+    "prefix": "un",
+    "body": [
+      "{{#unless ${1:condition}}}",
+      "\t${2}",
+      "{{/unless}}"
+    ],
+    "description": "Block unless helper"
+  },
+  
+  "ifElse": {
+    "prefix": "ifel",
+    "body": [
+      "{{#if ${1:condition}}}",
+      "\t${2}",
+      "{{else}}",
+      "\t${3}",
+      "{{/if}}"
+    ],
+    "description": "If-else block"
+  },
+  
+  "unlessElse": {
+    "prefix": "unel",
+    "body": [
+      "{{#unless ${1:condition}}}",
+      "\t${2}",
+      "{{else}}",
+      "\t${3}",
+      "{{/unless}}"
+    ],
+    "description": "Unless-else block"
+  },
+  
+  "ifElseIf": {
+    "prefix": "ifelif",
+    "body": [
+      "{{#if ${1:condition1}}}",
+      "\t${2}",
+      "{{else if ${3:condition2}}}",
+      "\t${4}",
+      "{{/if}}"
+    ],
+    "description": "If-else-if block"
+  },
+  
+  "eachLoop": {
+    "prefix": "each",
+    "body": [
+      "{{#each ${1:list} as |${2:item}|}}",
+      "\t${3}",
+      "{{/each}}"
+    ],
+    "description": "Each loop"
+  },
+  
+  "eachLoopWithIndex": {
+    "prefix": "eachx",
+    "body": [
+      "{{#each ${1:list} as |${2:item} ${3:index}|}}",
+      "\t${4}",
+      "{{/each}}"
+    ],
+    "description": "Each loop with index"
+  },
+  
+  "eachIn": {
+    "prefix": "eachin",
+    "body": [
+      "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
+      "\t${4}",
+      "{{/each-in}}"
+    ],
+    "description": "Each-in loop to iterate over properties of an object"
+  },
+  
+  "eachInElse": {
+    "prefix": "eachinel",
+    "body": [
+      "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
+      "\t${4}",
+      "{{else}}",
+      "\t${5}",
+      "{{/each-in}}"
+    ],
+    "description": "Each-in loop with else to iterate over properties of an object"
+  },
+  "componentInvocation": {
+    "prefix": "comp",
+    "body": [
+      "<${1:component} @${2:arg1}=\"${3:value1}\" @${4:arg2}=\"${5:value2}\">",
+      "\t${6}",
+      "</${1:component}>"
+    ],
+    "description": "Basic component invocation"
+  },
+
+  "yieldHelper": {
+    "prefix": "yield",
+    "body": [
+      "{{yield ${1:defaultContent}}}"
+    ],
+    "description": "Yield content in a block"
+  },
+
+  "concatHelper": {
+    "prefix": "concat",
+    "body": [
+      "{{concat ${1:string1} ${2:string2}}}"
+    ],
+    "description": "Concatenate strings"
+  }
+}

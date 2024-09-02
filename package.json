@@ -37,12 +37,16 @@
     ],
     "snippets": [
       {
+        "language": "handlebars",
+        "path": "./src/snippets/ember-hbs.json"
+      },
+      {
         "language": "javascript",
-        "path": "./src/snippets/snippets.json"
+        "path": "./src/snippets/emberjs.json"
       },
       {
         "language": "typescript",
-        "path": "./src/snippets/snippets.json"
+        "path": "./src/snippets/emberjs.json"
       }
     ]
   },
