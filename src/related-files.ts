@@ -50,7 +50,7 @@ function findRelatedFilesInPodsOrFlat(dir: string, file: string): Array<RelatedF
     .filter((item) => {
       const baseName = path.basename(item);
       const filePrefix = prefixName(baseName);
-      return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && file !== baseName;
+      return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && file !== baseName && fs.statSync(path.join(dir, item)).isFile();
     })
     .map((file) => ({
       label: file,
