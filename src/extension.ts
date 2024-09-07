@@ -1,7 +1,8 @@
-import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri } from "vscode";
+import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri, CompletionItem, CompletionItemKind, SnippetString, MarkdownString, languages } from "vscode";
 import path from "path";
 import { findRelatedFiles } from "./related-files";
 import { COMMANDS } from "./constants";
+import fs from "fs";
 
 export interface RelatedFiles {
   label: string;
@@ -37,6 +38,7 @@ export class TypeItem implements QuickPickItem {
 }
 
 export function activate(context: ExtensionContext) {
+  registerSnippets(context);
   context.subscriptions.push(
     commands.registerCommand(
       COMMANDS.SWITCH_RELATED_FILES,
@@ -83,6 +85,37 @@ async function switchRelatedFiles() {
         open(item);
       }
     });
+}
+async function registerSnippets(context: ExtensionContext) {
+  const snippetFiles = [
+      { language: 'handlebars', path: 'ember-hbs.json' },
+      { language: 'javascript', path: 'emberjs.json' },
+      { language: 'typescript', path: 'emberjs.json' }
+  ];
+
+  snippetFiles.forEach(file => {
+      const snippetPath = path.join(context.extensionPath, 'src', 'snippets', file.path);
+      
+      if (fs.existsSync(snippetPath)) {
+          const snippetContent = fs.readFileSync(snippetPath, 'utf8');
+          const snippets = JSON.parse(snippetContent);
+
+          Object.keys(snippets).forEach(snippetName => {
+              const snippet = snippets[snippetName];
+              const completionItem = new CompletionItem(snippet.prefix, CompletionItemKind.Snippet);
+              completionItem.insertText = new SnippetString(snippet.body.join('\n'));
+              completionItem.documentation = new MarkdownString(snippet.description);
+
+              context.subscriptions.push(
+                  languages.registerCompletionItemProvider(file.language, {
+                      provideCompletionItems() {
+                          return [completionItem];
+                      }
+                  })
+              );
+          });
+      }
+  });
 }
 
 function open(item: TypeItem) {

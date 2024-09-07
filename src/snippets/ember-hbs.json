@@ -1,6 +1,6 @@
 {
   "getHelper": {
-    "prefix": "get",
+    "prefix": "eget",
     "body": [
       "{{get ${1:object} \"${2:property}\"}}"
     ],
@@ -8,7 +8,7 @@
   },
   
   "actionHelper": {
-    "prefix": "act",
+    "prefix": "eaction",
     "body": [
       "{{action \"${1:actionName}\"}}"
     ],
@@ -16,7 +16,7 @@
   },
   
   "actionHelperOneParam": {
-    "prefix": "act1",
+    "prefix": "eaction2",
     "body": [
       "{{action \"${1:name}\" ${2:param}}}"
     ],
@@ -30,35 +30,16 @@
     ],
     "description": "Log a variable to the console"
   },
-  
-  "linkToHelper": {
-    "prefix": "linkto",
-    "body": [
-      "<LinkTo @route=\"${1:route}\">",
-      "\t${2}",
-      "</LinkTo>"
-    ],
-    "description": "Create a link-to component"
-  },
-
   "inlineIf": {
-    "prefix": "inif",
+    "prefix": "einif",
     "body": [
       "{{if ${1:condition} \"${2:true-output}\" \"${3:false-output}\"}}"
     ],
     "description": "Inline if helper"
   },
   
-  "inlineUnless": {
-    "prefix": "inun",
-    "body": [
-      "{{unless ${1:condition} \"${2:true-output}\" \"${3:false-output}\"}}"
-    ],
-    "description": "Inline unless helper"
-  },
-  
   "blockIf": {
-    "prefix": "if",
+    "prefix": "eif",
     "body": [
       "{{#if ${1:condition}}}",
       "\t${2}",
@@ -66,19 +47,8 @@
     ],
     "description": "Block if helper"
   },
-  
-  "blockUnless": {
-    "prefix": "un",
-    "body": [
-      "{{#unless ${1:condition}}}",
-      "\t${2}",
-      "{{/unless}}"
-    ],
-    "description": "Block unless helper"
-  },
-  
   "ifElse": {
-    "prefix": "ifel",
+    "prefix": "eifel",
     "body": [
       "{{#if ${1:condition}}}",
       "\t${2}",
@@ -88,33 +58,17 @@
     ],
     "description": "If-else block"
   },
-  
-  "unlessElse": {
-    "prefix": "unel",
+  "emberLinkToOctane": {
+    "prefix": "elinkto",
     "body": [
-      "{{#unless ${1:condition}}}",
-      "\t${2}",
-      "{{else}}",
-      "\t${3}",
-      "{{/unless}}"
+      "<LinkTo @route=\"${1:route}\" @model={{${2:model}}}>",
+      "  ${3:Link text}",
+      "</LinkTo>"
     ],
-    "description": "Unless-else block"
+    "description": "Ember LinkTo component (Octane-style)"
   },
-  
-  "ifElseIf": {
-    "prefix": "ifelif",
-    "body": [
-      "{{#if ${1:condition1}}}",
-      "\t${2}",
-      "{{else if ${3:condition2}}}",
-      "\t${4}",
-      "{{/if}}"
-    ],
-    "description": "If-else-if block"
-  },
-  
   "eachLoop": {
-    "prefix": "each",
+    "prefix": "eeach",
     "body": [
       "{{#each ${1:list} as |${2:item}|}}",
       "\t${3}",
@@ -124,7 +78,7 @@
   },
   
   "eachLoopWithIndex": {
-    "prefix": "eachx",
+    "prefix": "eeachx",
     "body": [
       "{{#each ${1:list} as |${2:item} ${3:index}|}}",
       "\t${4}",
@@ -134,7 +88,7 @@
   },
   
   "eachIn": {
-    "prefix": "eachin",
+    "prefix": "eeachin",
     "body": [
       "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
       "\t${4}",
@@ -144,7 +98,7 @@
   },
   
   "eachInElse": {
-    "prefix": "eachinel",
+    "prefix": "eeachinel",
     "body": [
       "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
       "\t${4}",
@@ -155,7 +109,7 @@
     "description": "Each-in loop with else to iterate over properties of an object"
   },
   "componentInvocation": {
-    "prefix": "comp",
+    "prefix": "ecomp",
     "body": [
       "<${1:component} @${2:arg1}=\"${3:value1}\" @${4:arg2}=\"${5:value2}\">",
       "\t${6}",
@@ -163,17 +117,18 @@
     ],
     "description": "Basic component invocation"
   },
-
-  "yieldHelper": {
-    "prefix": "yield",
+  "emberLet": {
+    "prefix": "elet",
     "body": [
-      "{{yield ${1:defaultContent}}}"
+      "{{#let ${1:value} as |${2:name}|}}",
+      "  ${3}",
+      "{{/let}}"
     ],
-    "description": "Yield content in a block"
+    "description": "Ember let block for scoped variables"
   },
 
   "concatHelper": {
-    "prefix": "concat",
+    "prefix": "econcat",
     "body": [
       "{{concat ${1:string1} ${2:string2}}}"
     ],

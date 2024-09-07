@@ -1,262 +1,240 @@
 {
-  "functionNoParams": {
-    "prefix": "func",
+  "emberComputedProperty": {
+    "prefix": "ecomputed",
     "body": [
-      "function ${1:functionName}() {",
-      "\t${2}",
+      "get ${1:computedPropertyName}() {",
+      "  return ${2:// Computed property implementation};",
       "}"
     ],
-    "description": "Function with no parameters"
+    "description": "Ember computed property getter"
   },
-  
-  "functionOneParam": {
-    "prefix": "func1",
+  "emberComputedPropertyClassic": {
+    "prefix": "ecomputed-classic",
     "body": [
-      "function ${1:functionName}(${2:param}) {",
-      "\t${3}",
-      "}"
-    ],
-    "description": "Function with one parameter"
-  },
-  
-  "functionTwoParams": {
-    "prefix": "func2",
-    "body": [
-      "function ${1:functionName}(${2:param1}, ${3:param2}) {",
-      "\t${4}",
-      "}"
-    ],
-    "description": "Function with two parameters"
-  },
-  
-  "functionThreeParams": {
-    "prefix": "func3",
-    "body": [
-      "function ${1:functionName}(${2:param1}, ${3:param2}, ${4:param3}) {",
-      "\t${5}",
-      "}"
-    ],
-    "description": "Function with three parameters"
-  },
-  
-  "computedProperty": {
-    "prefix": "cu",
-    "body": [
-      "${1:computedPropertyName}: computed('${2:propertyToBeWatched}', function() {",
-      "\treturn ${3};",
+      "${1:computedPropertyName}: computed('${2:dependentKey}', function() {",
+      "  return ${3:// Computed property implementation};",
       "})"
     ],
-    "description": "Computed property"
+    "description": "Ember classic computed property"
   },
-  
-  "computedPropertyGetterSetter": {
-    "prefix": "cugs",
-    "body": [
-      "${1:computedPropertyName}: computed('${2:propertyToBeWatched}', {",
-      "\tget() {",
-      "\t\t${3}",
-      "\t},",
-      "\tset(key, value) {",
-      "\t\t${4:/* set logic here */}",
-      "\t}",
-      "})"
-    ],
-    "description": "Computed property with getter and setter"
-  },
-  
-  "importRsvp": {
-    "prefix": "imp rsvp",
-    "body": [
-      "import { ${1:module} } from '@ember/rsvp';"
-    ],
-    "description": "Import from @ember/rsvp"
-  },
-  
-  "importUtils": {
-    "prefix": "imp utils",
-    "body": [
-      "import { ${1:module} } from '@ember/utils';"
-    ],
-    "description": "Import from @ember/utils"
-  },
-  
-  "importService": {
-    "prefix": "imp service",
-    "body": [
-      "import { service } from '@ember/service';"
-    ],
-    "description": "Import from @ember/service"
-  },
-  
-  "importObject": {
-    "prefix": "imp object",
-    "body": [
-      "import { ${1:module} } from '@ember/object';"
-    ],
-    "description": "Import from @ember/object"
-  },
-  
-  "importComputed": {
-    "prefix": "imp comp",
-    "body": [
-      "import { ${1:module} } from '@ember/object/computed';"
-    ],
-    "description": "Import from @ember/object/computed"
-  },
-  
-  "classMethodNoParams": {
-    "prefix": "efunc",
-    "body": [
-      "${1:methodName}() {",
-      "\t${2}",
-      "}"
-    ],
-    "description": "Class method with no parameters"
-  },
-  
-  "classMethodOneParam": {
-    "prefix": "efunc1",
-    "body": [
-      "${1:methodName}(${2:param}) {",
-      "\t${3}",
-      "}"
-    ],
-    "description": "Class method with one parameter"
-  },
-  
-  "classMethodTwoParams": {
-    "prefix": "efunc2",
-    "body": [
-      "${1:methodName}(${2:param1}, ${3:param2}) {",
-      "\t${4}",
-      "}"
-    ],
-    "description": "Class method with two parameters"
-  },
-  
-  "classMethodThreeParams": {
-    "prefix": "efunc3",
-    "body": [
-      "${1:methodName}(${2:param1}, ${3:param2}, ${4:param3}) {",
-      "\t${5}",
-      "}"
-    ],
-    "description": "Class method with three parameters"
-  },
-  
-  "componentGlimmerJS": {
-    "prefix": "comp-g",
+  "emberComponentOctane": {
+    "prefix": "ecomponent",
     "body": [
       "import Component from '@glimmer/component';",
+      "import { action } from '@ember/object';",
       "",
       "export default class ${1:ComponentName} extends Component {",
-      "\t${2}",
+      "  @action",
+      "  ${2:handleAction}() {",
+      "    ${3:// Action implementation}",
+      "  }",
       "}"
     ],
-    "description": "Basic Ember Octane/Glimmer component in JavaScript"
+    "description": "Ember Octane component class"
   },
-  
-  "componentJS": {
-    "prefix": "comp",
+  "emberComponentClassic": {
+    "prefix": "ecomponent-classic",
     "body": [
       "import Component from '@ember/component';",
       "",
       "export default Component.extend({",
-      "\t${1}",
+      "  ${1:// component properties and methods}",
+      "  actions: {",
+      "    ${2:actionName}() {",
+      "      ${3:// Action implementation}",
+      "    }",
+      "  }",
       "});"
     ],
-    "description": "Basic Ember classic component in JavaScript"
+    "description": "Ember classic component"
   },
-  
-  "routeGlimmerJS": {
-    "prefix": "route-g",
+  "emberRouteOctane": {
+    "prefix": "eroute",
     "body": [
       "import Route from '@ember/routing/route';",
       "",
       "export default class ${1:RouteName} extends Route {",
-      "\tmodel() {",
-      "\t\t${2}",
-      "\t}",
+      "  async model(params) {",
+      "    ${2:// Fetch and return the model}",
+      "  }",
       "}"
     ],
-    "description": "Basic Ember Octane route in JavaScript"
+    "description": "Ember Octane Route class"
   },
-  
-  "routeJS": {
-    "prefix": "route",
+  "emberRouteClassic": {
+    "prefix": "eroute-classic",
     "body": [
       "import Route from '@ember/routing/route';",
       "",
       "export default Route.extend({",
-      "\tmodel() {",
-      "\t\t${1}",
-      "\t}",
+      "  model(params) {",
+      "    ${1:// Fetch and return the model}",
+      "  }",
       "});"
     ],
-    "description": "Basic Ember Octane route in JavaScript"
+    "description": "Ember classic Route"
   },
-  
-  "serviceGlimmerJS": {
-    "prefix": "service-g",
+  "emberControllerOctane": {
+    "prefix": "econtroller",
     "body": [
-      "import Service from '@ember/service';",
+      "import Controller from '@ember/controller';",
+      "import { action } from '@ember/object';",
+      "import { tracked } from '@glimmer/tracking';",
       "",
-      "export default class ${1:ServiceName} extends Service {",
-      "\t${2}",
+      "export default class ${1:ControllerName} extends Controller {",
+      "  @tracked ${2:property} = ${3:initialValue};",
+      "",
+      "  @action",
+      "  ${4:handleAction}() {",
+      "    ${5:// Action implementation}",
+      "  }",
       "}"
     ],
-    "description": "Basic Ember Octane service in JavaScript"
+    "description": "Ember Octane Controller class"
   },
-  
-  "serviceJS": {
-    "prefix": "service",
+  "emberControllerClassic": {
+    "prefix": "econtroller-classic",
+    "body": [
+      "import Controller from '@ember/controller';",
+      "import { computed } from '@ember/object';",
+      "",
+      "export default Controller.extend({",
+      "  ${1:property}: null,",
+      "",
+      "  ${2:computedProperty}: computed('${3:dependentKey}', function() {",
+      "    ${4:// Computed property implementation}",
+      "  }),",
+      "",
+      "  actions: {",
+      "    ${5:actionName}() {",
+      "      ${6:// Action implementation}",
+      "    }",
+      "  }",
+      "});"
+    ],
+    "description": "Ember classic Controller"
+  },
+  "emberServiceOctane": {
+    "prefix": "eservice",
+    "body": [
+      "import Service from '@ember/service';",
+      "import { tracked } from '@glimmer/tracking';",
+      "",
+      "export default class ${1:ServiceName} extends Service {",
+      "  @tracked ${2:property} = ${3:initialValue};",
+      "",
+      "  ${4:methodName}() {",
+      "    ${5:// Method implementation}",
+      "  }",
+      "}"
+    ],
+    "description": "Ember Octane Service class"
+  },
+  "emberServiceClassic": {
+    "prefix": "eservice-classic",
     "body": [
       "import Service from '@ember/service';",
       "",
       "export default Service.extend({",
-      "\t${1}",
+      "  ${1:property}: null,",
+      "",
+      "  ${2:methodName}() {",
+      "    ${3:// Method implementation}",
+      "  }",
       "});"
     ],
-    "description": "Basic Ember Octane service in JavaScript"
+    "description": "Ember classic Service"
   },
-  
-  "controllerGlimmerJS": {
-    "prefix": "controller-g",
+  "emberHelperOctane": {
+    "prefix": "ehelper",
     "body": [
-      "import Controller from '@ember/controller';",
+      "import { helper } from '@ember/component/helper';",
       "",
-      "export default class ${1:ControllerName} extends Controller {",
-      "\t${2}",
-      "}"
-    ],
-    "description": "Basic Ember Octane controller in JavaScript"
-  },
-  
-  "controllerJS": {
-    "prefix": "controller",
-    "body": [
-      "import Controller from '@ember/controller';",
-      "",
-      "export default Controller.extend({",
-      "\t${1}",
-      "});"
-    ],
-    "description": "Basic Ember Octane controller in JavaScript"
-  },
-  
-  "componentTS": {
-    "prefix": "comp-ts",
-    "body": [
-      "import Component from '@glimmer/component';",
-      "",
-      "interface ${1:ComponentName}Args {",
-      "\t// Define your component arguments here",
+      "function ${1:helperName}([${2:param1}, ${3:param2}], hash) {",
+      "  ${4:// Helper implementation}",
       "}",
       "",
-      "export default class ${1:ComponentName} extends Component<${1:ComponentName}Args> {",
-      "\t// Component logic here",
+      "export default helper(${1:helperName});"
+    ],
+    "description": "Ember Octane Helper function"
+  },
+  "emberHelperClassic": {
+    "prefix": "ehelper-classic",
+    "body": [
+      "import { helper } from '@ember/component/helper';",
+      "",
+      "export function ${1:helperName}([${2:param1}, ${3:param2}], hash) {",
+      "  ${4:// Helper implementation}",
+      "}",
+      "",
+      "export default helper(${1:helperName});"
+    ],
+    "description": "Ember classic Helper function"
+  },
+  "emberActionOctane": {
+    "prefix": "eaction",
+    "body": [
+      "@action",
+      "${1:actionName}(${2:event}) {",
+      "  ${3:// Action implementation}",
       "}"
     ],
-    "description": "Basic Ember Octane/Glimmer component in TypeScript"
+    "description": "Ember Octane action method"
+  },
+  "emberActionClassic": {
+    "prefix": "eaction-classic",
+    "body": [
+      "actions: {",
+      "  ${1:actionName}(${2:event}) {",
+      "    ${3:// Action implementation}",
+      "  }",
+      "}"
+    ],
+    "description": "Ember classic action method"
+  },
+  "emberTestOctane": {
+    "prefix": "etest",
+    "body": [
+      "import { module, test } from 'qunit';",
+      "import { setupTest } from 'ember-qunit';",
+      "",
+      "module('${1:ModuleName}', function(hooks) {",
+      "  setupTest(hooks);",
+      "",
+      "  test('${2:it does something}', async function(assert) {",
+      "    ${3:// Test implementation}",
+      "    assert.ok(true);",
+      "  });",
+      "});"
+    ],
+    "description": "Ember Octane test module"
+  },
+  "emberModelOctane": {
+    "prefix": "emodel",
+    "body": [
+      "import Model, { attr, belongsTo, hasMany } from '@ember-data/model';",
+      "",
+      "export default class ${1:ModelName} extends Model {",
+      "  @attr('string') ${2:attribute1};",
+      "  @attr('number') ${3:attribute2};",
+      "  @belongsTo('${4:otherModel}') ${5:relationship1};",
+      "  @hasMany('${6:anotherModel}') ${7:relationship2};",
+      "}"
+    ],
+    "description": "Ember Octane Data model"
+  },
+  "emberModelClassic": {
+    "prefix": "emodel-classic",
+    "body": [
+      "import DS from 'ember-data';",
+      "",
+      "export default DS.Model.extend({",
+      "  ${1:attribute1}: DS.attr('string'),",
+      "  ${2:attribute2}: DS.attr('number'),",
+      "  ${3:relationship1}: DS.belongsTo('${4:otherModel}'),",
+      "  ${5:relationship2}: DS.hasMany('${6:anotherModel}')",
+      "});"
+    ],
+    "description": "Ember classic Data model"
   }
 }
