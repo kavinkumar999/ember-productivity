@@ -1,118 +1,195 @@
-import path from 'path';
+import { TypeItem } from './extension';
 import fs from 'fs';
-import { TypeItem, RelatedFiles } from './extension';
 
-const POD_GROUP_FILES = ['route.js', 'route.ts', 'controller.js', 'controller.ts', 'template.hbs', 'component.js', 'component.ts'];
+export const regexTypes = [
+  // Pod Components
+  { module: 'pod-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(component)\.(js|ts)$/ },
+  { module: 'pod-component-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(template)\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-unit', exp: /(.+?)(tests\/unit\/(.+?)\/component-test\.(js|ts))$/ },
+  { module: 'pod-component-integration', exp: /(.+?)(tests\/integration\/(.+?)\/component-test\.(js|ts))$/ },
 
-interface ModuleSearch {
-  [key: string]: Array<string>
-};
+  { module: 'pod-route-route', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(route)\.(js|ts)$/ },
+  { module: 'pod-controller-controller', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(controller)\.(js|ts)$/ },
 
-const MODULES_FOR_SEARCH: ModuleSearch = {
-  "templates": ["routes", "controllers", "components"],
-  "controllers": ["routes", "templates"],
-  "routes": ["controllers", "templates"],
-  "components": ["templates"]
-};
+  // Classic Components
+  { module: 'classic-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-component-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+?)\.(hbs)$/ },
+  { module: 'classic-component-style', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+?)\.(css|sass|scss)$/ },
+  { module: 'classic-component-unit', exp: /(.+?)(tests\/unit\/components\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-component-integration', exp: /(.+?)(tests\/integration\/components\/(.+?)-test\.(js|ts))$/ },
 
-const cache: { [key: string]: Array<TypeItem> } = {};
+  { module: 'classic-route-route', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/routes\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-route-unit', exp: /(.+?)(tests\/unit\/routes\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-route-integration', exp: /(.+?)(tests\/integration\/routes\/(.+?)-test\.(js|ts))$/ },
 
-export function findRelatedFiles(dir: string, file: string, basePath: string): Array<TypeItem> {
-  const cacheKey = `${dir}/${file}`;
+  { module: 'classic-controller-controller', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-controller-unit', exp: /(.+?)(tests\/unit\/controllers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-controller-integration', exp: /(.+?)(tests\/integration\/controllers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-controller-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/templates\/(.+?)\.(hbs)$/ },
 
-  if (cache[cacheKey]) {
-    return cache[cacheKey];
-  }
-  let relatedFiles: Array<RelatedFiles> = [];
+  { module: 'classic-model-model', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/models\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-model-unit', exp: /(.+?)(tests\/unit\/models\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-model-integration', exp: /(.+?)(tests\/integration\/models\/(.+?)-test\.(js|ts))$/ },
 
-  if (findModule(dir) === 'components') {
-    relatedFiles = relatedFiles.concat(
-      findRelatedFilesInPodsOrFlat(dir, file),
-      findRelatedFilesInClassic(dir, file),
-    );
-  } else {
-    relatedFiles = isPods(file) ? findRelatedFilesInPodsOrFlat(dir, file) : findRelatedFilesInClassic(dir, file);
-  }
+  { module: 'classic-helper-helper', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/helpers\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-helper-unit', exp: /(.+?)(tests\/unit\/helpers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-helper-integration', exp: /(.+?)(tests\/integration\/helpers\/(.+?)-test\.(js|ts))$/ },
 
-  let items = relatedFiles.map(
-    (item) => new TypeItem(item, item.path, basePath)
-  );
+  { module: 'classic-mixin-mixin', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/mixins\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-mixin-unit', exp: /(.+?)(tests\/unit\/mixins\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-mixin-integration', exp: /(.+?)(tests\/integration\/mixins\/(.+?)-test\.(js|ts))$/ },
 
-  cache[cacheKey] = items;
-  return items;
+  { module: 'classic-service-service', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/services\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-service-unit', exp: /(.+?)(tests\/unit\/services\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-service-integration', exp: /(.+?)(tests\/integration\/services\/(.+?)-test\.(js|ts))$/ }
+];
 
+const groups = [
+  ['pod-controller-controller-js', 'pod-route-route-js', 'pod-controller-unit-js', 'pod-controller-integration-js', 'pod-route-unit-js', 'pod-route-integration-js', 'pod-component-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
+  ['classic-component-component-js', 'classic-component-template-hbs', 'classic-component-style-css', 'classic-component-style-sass', 'classic-component-style-scss', 'classic-component-unit-js', 'classic-component-integration-js'],
+  ['classic-controller-controller-js', 'classic-controller-template-hbs', 'classic-route-route-js', 'classic-controller-unit-js', 'classic-controller-integration-js', 'classic-route-unit-js', 'classic-route-integration-js'],
+  ['classic-helper-helper-js', 'classic-helper-unit-js', 'classic-helper-integration-js'],
+  ['classic-service-service-js', 'classic-service-unit-js', 'classic-service-integration-js']
+].map(group => {
+  const typescript = group.filter(i => i.endsWith('-js')).map(jsItem => jsItem.replace('-js', '-ts'));
+  return group.concat(typescript);
+});
+
+interface Type {
+  appRoot: string,
+  hostType: string,
+  path: string,
+  name: string,
+  key: string
 }
 
-function findRelatedFilesInPodsOrFlat(dir: string, file: string): Array<RelatedFiles> {
-  const fileArgPrefix = prefixName(file);
+function detectType (relativeFilePath: string): Type | undefined {
+  return regexTypes
+    .map((type) => {
+      const m = relativeFilePath.match(type.exp);
 
-  return fs.readdirSync(dir, 'utf-8')
-    .filter((item) => {
-      const baseName = path.basename(item);
-      const filePrefix = prefixName(baseName);
-      return (isFilesRelated(baseName) || fileArgPrefix === filePrefix) && file !== baseName && fs.statSync(path.join(dir, item)).isFile();
+      if (m) {
+        const appRoot = m[1];
+        const hostType = m[2];
+        const name = m[3];
+        const ext = m[4];
+
+        return { appRoot, hostType, path: relativeFilePath, name, key: `${type.module}-${ext}` };
+      }
     })
-    .map((file) => ({
-      label: file,
-      file: file,
-      path: path.join(dir, file),
-    }));
+    .find((type) => Boolean(type));
 }
 
-function findRelatedFilesInClassic(dir: string, file: string): Array<RelatedFiles> {
-  const module = findModule(dir);
-  const prefix = prefixName(file);
-  if (!module) {
-    return [];
+function getRelatedKeys (key: string): string[] {
+  let relatedGroup: string[] =  groups.find((group) => group.indexOf(key) !== -1) || [];
+  relatedGroup = relatedGroup?.filter((_key) => _key !== key);
+
+  return relatedGroup;
+}
+
+function typeKeyToLabel (typeKey: string): string {
+  switch (typeKey) {
+    case 'pod-component-component':
+    case 'classic-component-component':
+      return 'Component';
+
+    case 'pod-component-style':
+      return 'Stylesheet';
+
+    case 'pod-route-route':
+    case 'classic-route-route':
+      return 'Route';
+
+      case 'pod-controller-controller':
+      case 'classic-controller-controller':
+      return 'Controller';
+
+    case 'classic-mixin-mixin':
+      return 'Mixin';
+
+    case 'classic-model-model':
+      return 'Model';
+
+    case 'classic-helper-helper':
+      return 'Helper';
+
+    case 'classic-service-service':
+      return 'Service';
+
+    case 'pod-component-template':
+    case 'classic-component-template':
+    case 'pod-template-template':
+    case 'classic-template-template':
+    case 'classic-controller-template':
+    case 'pod-controller-template':
+      return 'Template';
+
+    case 'classic-component-unit':
+    case 'pod-component-unit':
+    case 'classic-controller-unit':
+    case 'classic-model-unit':
+    case 'classic-helper-unit':
+    case 'classic-mixin-unit':
+    case 'classic-service-unit':
+      return 'Unit Test';
+
+    case 'classic-component-integration':
+    case 'pod-component-integration':
+    case 'classic-controller-integration':
+    case 'classic-model-integration':
+    case 'classic-helper-integration':
+    case 'classic-mixin-integration':
+    case 'classic-service-integration':
+      return 'Integration Test';
   }
 
-  const searchingFiles = MODULES_FOR_SEARCH[module];
-  const relatedFiles: Array<RelatedFiles> = [];
+  return typeKey;
+}
 
-  searchingFiles.forEach(_module => {
-    const _dir = findModuleDirectory(dir, module, _module);
+function getPath (sourceType: Type, typeKey: string): string {
+  const { appRoot, hostType, name } = sourceType;
+  const [ispod, type, subtype, ext] = typeKey.split('-');
 
-    if (fs.existsSync(_dir)) {
-      relatedFiles.push(
-        ...fs
-          .readdirSync(_dir, "utf-8")
-          .filter((item) => prefixName(path.basename(item)) === prefix && fs.statSync(path.join(_dir, item)).isFile())
-          .map((_file) => ({
-            label: _module,
-            file: _file,
-            path: path.join(_dir, _file),
-          }))
-      );
+  if (ispod === 'pod') {
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `tests/${subtype}/${type}s/${name}/${type}-test.${ext}`;
+      default:
+        return `${appRoot}${hostType}/${subtype || type}.${ext}`;
     }
-  });
-
-  return relatedFiles;
-}
-
-function findModule(dir: string): string | null {
-  const paths = dir.split(path.sep);
-  return Object.keys(MODULES_FOR_SEARCH).find(module => paths.includes(module)) || null;
-}
-
-function findModuleDirectory(dir: string, module: string, _module: string): string {
-  if (module === 'components' && _module === 'templates') {
-    return dir.replace(module, _module + "/components");
-  } else if (module === 'templates' && _module === 'components') {
-    return dir.replace("/" + module, '');
   } else {
-    return dir.replace(module, _module);
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `tests/${subtype}/${type}s/${name}-test.${ext}`;
+      case 'style':
+        return `${appRoot}${hostType}/styles/${type}s/${name}.${ext}`;
+      case 'template':
+        if (type === 'controller') {
+          return `${appRoot}${hostType}/templates/${name}.${ext}`;
+        } else {
+          return `${appRoot}${hostType}/templates/${type}s/${name}.${ext}`;
+        }
+      default:
+        return `${appRoot}${hostType}/${type}s/${name}.${ext}`;
+    }
   }
 }
+export function findRelatedFiles(rootPath: string, relativeFilePath: string): Array<TypeItem> {
+  
+  let type = detectType(relativeFilePath);
+  if (!type) { return []; }
 
-function isFilesRelated(file: string): boolean {
-  const relatedFiles = ['route.js', 'template.hbs', 'controller.js', 'component.js'];
-  return relatedFiles.includes(file);
-}
+  let relatedKeys =  getRelatedKeys(type.key);
 
-function prefixName(file = ''): string {
-  return file.split('.')[0] || '';
-}
+  return relatedKeys.map((key) => {
+    let _key = key.split('-').slice(0, 3).join('-');
+    return {
+      label: typeKeyToLabel(_key),
+      path: getPath(type, key)
+    };
+  }).map((item) => new TypeItem(item, rootPath)).filter((item) => fs.existsSync(item.rootPath));
 
-function isPods(file: string): boolean {
-  return POD_GROUP_FILES.includes(file);
 }

@@ -1,12 +1,11 @@
-import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri, CompletionItem, CompletionItemKind, SnippetString, MarkdownString, languages } from "vscode";
-import path from "path";
-import { findRelatedFiles } from "./related-files";
-import { COMMANDS } from "./constants";
-import fs from "fs";
+import { ExtensionContext, commands, window, workspace, QuickPickItem, Uri, CompletionItem, CompletionItemKind, SnippetString, MarkdownString, languages } from 'vscode';
+import path from 'path';
+import { findRelatedFiles } from './related-files';
+import { COMMANDS } from './constants';
+import fs from 'fs';
 
 export interface RelatedFiles {
   label: string;
-  file: string,
 	path: string;
 }
 
@@ -19,12 +18,11 @@ export class TypeItem implements QuickPickItem {
   constructor(
     item: RelatedFiles,
     rootPath: string,
-    basePath: string,
     detail?: string | undefined
   ) {
     this.label = item.label;
-    this.rootPath = rootPath;
-    this.description = path.relative(basePath, rootPath);
+    this.rootPath = path.join(rootPath, item.path);
+    this.description = item.path;
     this.detail = detail;
   }
 
@@ -50,34 +48,34 @@ export function activate(context: ExtensionContext) {
 async function switchRelatedFiles() {
   const editor = window.activeTextEditor;
   if (!editor) {
-    window.showErrorMessage("No file is currently open.");
+    window.showErrorMessage('No file is currently open.');
     return;
   }
 
   const basePath = workspace.workspaceFolders?.[0]?.uri.fsPath;
   if (!basePath) {
-    window.showErrorMessage("Workspace folder not found.");
+    window.showErrorMessage('Workspace folder not found.');
     return;
   }
 
-  const currentFilePath = editor.document.uri.fsPath;
-  const currentFileDir = path.dirname(currentFilePath);
-  const currentFileName = path.basename(currentFilePath);
+  let rootPath = workspace.rootPath || '';
+  let relativeFileName = workspace.asRelativePath(window?.activeTextEditor?.document?.fileName || '');
 
-	const files = findRelatedFiles(currentFileDir, currentFileName, basePath);
+	const files: Array<TypeItem> = findRelatedFiles(rootPath, relativeFileName);
 
   if (files.length === 0) {
-    window.showInformationMessage("No related files found.");
+    window.showInformationMessage('No related files found.');
     return;
   }
 
   if (files.length === 1) {
-    open(files[0]);
+    let [ file = {} as TypeItem ] = files;
+    open(file);
     return;
   }
 
 	window.showQuickPick(files as TypeItem[], {
-      placeHolder: "Select File",
+      placeHolder: 'Select File',
       matchOnDescription: true,
     })
     .then((item) => {
