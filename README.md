@@ -1,18 +1,17 @@
-# Ember Productivity
+# 🚀 Ember Productivity
 
-This extension enhances your workflow with easy switching between related Ember files and layouts in [Visual Studio Code](https://code.visualstudio.com/). It also includes a collection of Ember JS and Handlebars snippets to streamline your development process.
+This extension enhances your workflow with easy switching between 🌟 related Ember files and layouts in [Visual Studio Code](https://code.visualstudio.com/). It also includes a collection of Ember JS and Handlebars snippets to streamline your development process.
 
-
-## Switch Related Files
+## 🔄 Switch Related Files Like a Pro!
 
 ![Switch Related Files](https://raw.githubusercontent.com/kavinkumar999/ember-productivity/main/images/switch-files.gif)
 
-### Default Keybindings for Ember Productivity Addon
+### ⌨️ Magical Keybindings
 
-The Ember Productivity Addon includes keybindings to easily switch between related files:
+Unleash the power of quick file switching with these enchanted keybindings:
 
-- **Mac:** `Cmd + R`
-- **Win/Linux:** `Ctrl + R`
+- 🍎 **Mac:** `Cmd + R`
+- 🖥️ **Win/Linux:** `Ctrl + R`
 
 ### File Switches
 
@@ -30,15 +29,15 @@ The Ember Productivity Addon includes keybindings to easily switch between relat
 * TypeScript (.ts)
 * Handlebars (.hbs)
 
-## Handlebars Snippets CheatSheet
+## 🧙‍♂️ Handlebars Snippets Spellbook
 
 Below is a list of available Handlebars snippets and their triggers. The **⇥** represents the `TAB` key.
 
 ![code-snippets](https://raw.githubusercontent.com/kavinkumar999/ember-productivity/main/images/snippets.gif)
 
-### Handlebars Helpers
+### 🪄 Handlebars Helpers
 
-| Trigger         | Content                                            |
+| Trigger         | Spell                                              |
 | --------------- | -------------------------------------------------- |
 | `get`           | `{{get ${1:object} "${2:property}"}}`             |
 | `act`           | `{{action "${1:actionName}"}}`                     |
@@ -60,10 +59,9 @@ Below is a list of available Handlebars snippets and their triggers. The **⇥**
 | `yield`         | `{{yield ${1:defaultContent}}}`                   |
 | `concat`        | `{{concat ${1:string1} ${2:string2}}}`            |
 
-## JavaScript / TypeScript Ember file CheatSheet
-# Ember Snippets
+## 🚀 JavaScript / TypeScript Ember file CheatSheet
 
-### Ember Computed Properties
+### 🌟 Ember Computed Properties
 
 #### Ember Computed Property (Modern)
 
@@ -85,7 +83,7 @@ ${1:computedPropertyName}: computed('${2:dependentKey}', function() {
 })
 ```
 
-### Ember Components
+### 🌟 Ember Components
 
 #### Ember Component (Octane)
 
@@ -140,7 +138,7 @@ export default class ${1:ComponentName} extends Component<${1:ComponentName}Args
 }
 ```
 
-### Ember Routes
+### 🌟 Ember Routes
 
 #### Ember Route (Octane)
 
@@ -170,7 +168,7 @@ export default Route.extend({
 });
 ```
 
-### Ember Controllers
+### 🌟 Ember Controllers
 
 #### Ember Controller (Octane)
 
@@ -214,7 +212,7 @@ export default Controller.extend({
 });
 ```
 
-### Ember Services
+### 🌟 Ember Services
 
 #### Ember Service (Octane)
 
@@ -249,7 +247,7 @@ export default Service.extend({
 });
 ```
 
-### Ember Helpers
+### 🌟 Ember Helpers
 
 #### Ember Helper (Octane)
 
@@ -279,7 +277,7 @@ export function ${1:helperName}([${2:param1}, ${3:param2}], hash) {
 export default helper(${1:helperName});
 ```
 
-### Ember Actions
+### 🌟 Ember Actions
 
 #### Ember Action (Octane)
 
@@ -304,7 +302,7 @@ actions: {
 }
 ```
 
-### Ember Tests
+### 🌟 Ember Tests
 
 #### Ember Test (Octane)
 
@@ -324,7 +322,7 @@ module('${1:ModuleName}', function(hooks) {
 });
 ```
 
-### Ember Models
+### 🌟 Ember Models
 
 #### Ember Model (Octane)
 
