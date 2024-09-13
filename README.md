@@ -45,19 +45,16 @@ Below is a list of available Handlebars snippets and their triggers. The **⇥**
 | `log`           | `{{log ${1:var}}}`                                |
 | `linkto`        | `<LinkTo @route="${1:route}"> ${2} </LinkTo>`     |
 | `inif`          | `{{if ${1:condition} "${2:true-output}" "${3:false-output}"}}` |
-| `inun`          | `{{unless ${1:condition} "${2:true-output}" "${3:false-output}"}}` |
 | `if`            | `{{#if ${1:condition}}} ${2} {{/if}}`             |
-| `un`            | `{{#unless ${1:condition}}} ${2} {{/unless}}`     |
 | `ifel`          | `{{#if ${1:condition}}} ${2} {{else}} ${3} {{/if}}` |
-| `unel`          | `{{#unless ${1:condition}}} ${2} {{else}} ${3} {{/unless}}` |
 | `ifelif`        | `{{#if ${1:condition1}}} ${2} {{else if ${3:condition2}}} ${4} {{/if}}` |
 | `each`          | `{{#each ${1:list} as \|${2:item}\|}} ${3} {{/each}}` |
 | `eachx`         | `{{#each ${1:list} as \|${2:item} ${3:index}\|}} ${4} {{/each}}` |
 | `eachin`        | `{{#each-in ${1:object} as \|${2:key} ${3:value}\|}} ${4} {{/each-in}}` |
 | `eachinel`      | `{{#each-in ${1:object} as \|${2:key} ${3:value}\|}} ${4} {{else}} ${5} {{/each-in}}` |
-| `comp`          | `<${1:component} @${2:arg1}="${3:value1}" @${4:arg2}="${5:value2}"> ${6} </${1:component}>` |
-| `yield`         | `{{yield ${1:defaultContent}}}`                   |
-| `concat`        | `{{concat ${1:string1} ${2:string2}}}`            |
+| `comp`         | `<${1:component} @${2:arg1}="${3:value1}" @${4:arg2}="${5:value2}"> ${6} </${1:component}>` |
+| `concat`       | `{{concat ${1:string1} ${2:string2}}}`            |
+| `let`          | `{{#let ${1:value} as \|${2:name}\|}}  ${3} {{/let}}`            |
 
 ## 🚀 JavaScript / TypeScript Ember file CheatSheet
 

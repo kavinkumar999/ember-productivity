@@ -1,6 +1,6 @@
 {
   "getHelper": {
-    "prefix": "eget",
+    "prefix": "get",
     "body": [
       "{{get ${1:object} \"${2:property}\"}}"
     ],
@@ -8,7 +8,7 @@
   },
   
   "actionHelper": {
-    "prefix": "eaction",
+    "prefix": "act",
     "body": [
       "{{action \"${1:actionName}\"}}"
     ],
@@ -16,7 +16,7 @@
   },
   
   "actionHelperOneParam": {
-    "prefix": "eaction2",
+    "prefix": "act1",
     "body": [
       "{{action \"${1:name}\" ${2:param}}}"
     ],
@@ -31,7 +31,7 @@
     "description": "Log a variable to the console"
   },
   "inlineIf": {
-    "prefix": "einif",
+    "prefix": "inif",
     "body": [
       "{{if ${1:condition} \"${2:true-output}\" \"${3:false-output}\"}}"
     ],
@@ -39,7 +39,7 @@
   },
   
   "blockIf": {
-    "prefix": "eif",
+    "prefix": "if",
     "body": [
       "{{#if ${1:condition}}}",
       "\t${2}",
@@ -48,7 +48,7 @@
     "description": "Block if helper"
   },
   "ifElse": {
-    "prefix": "eifel",
+    "prefix": "ifel",
     "body": [
       "{{#if ${1:condition}}}",
       "\t${2}",
@@ -59,7 +59,7 @@
     "description": "If-else block"
   },
   "emberLinkToOctane": {
-    "prefix": "elinkto",
+    "prefix": "linkto",
     "body": [
       "<LinkTo @route=\"${1:route}\" @model={{${2:model}}}>",
       "  ${3:Link text}",
@@ -68,7 +68,7 @@
     "description": "Ember LinkTo component (Octane-style)"
   },
   "eachLoop": {
-    "prefix": "eeach",
+    "prefix": "each",
     "body": [
       "{{#each ${1:list} as |${2:item}|}}",
       "\t${3}",
@@ -78,7 +78,7 @@
   },
   
   "eachLoopWithIndex": {
-    "prefix": "eeachx",
+    "prefix": "eachx",
     "body": [
       "{{#each ${1:list} as |${2:item} ${3:index}|}}",
       "\t${4}",
@@ -88,7 +88,7 @@
   },
   
   "eachIn": {
-    "prefix": "eeachin",
+    "prefix": "eachin",
     "body": [
       "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
       "\t${4}",
@@ -98,7 +98,7 @@
   },
   
   "eachInElse": {
-    "prefix": "eeachinel",
+    "prefix": "eachinel",
     "body": [
       "{{#each-in ${1:object} as |${2:key} ${3:value}|}}",
       "\t${4}",
@@ -109,7 +109,7 @@
     "description": "Each-in loop with else to iterate over properties of an object"
   },
   "componentInvocation": {
-    "prefix": "ecomp",
+    "prefix": "comp",
     "body": [
       "<${1:component} @${2:arg1}=\"${3:value1}\" @${4:arg2}=\"${5:value2}\">",
       "\t${6}",
@@ -118,7 +118,7 @@
     "description": "Basic component invocation"
   },
   "emberLet": {
-    "prefix": "elet",
+    "prefix": "let",
     "body": [
       "{{#let ${1:value} as |${2:name}|}}",
       "  ${3}",
@@ -128,7 +128,7 @@
   },
 
   "concatHelper": {
-    "prefix": "econcat",
+    "prefix": "concat",
     "body": [
       "{{concat ${1:string1} ${2:string2}}}"
     ],
