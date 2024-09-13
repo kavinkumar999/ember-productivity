@@ -36,10 +36,10 @@
     "keybindings": [
       {
         "command": "ember-productivity.switchRelatedFiles",
-        "key": "cmd+alt+r",
-        "mac": "cmd+alt+r",
-        "win": "ctrl+alt+r",
-        "linux": "ctrl+alt+r"
+        "key": "cmd+r",
+        "mac": "cmd+r",
+        "win": "ctrl+r",
+        "linux": "ctrl+r"
       }
     ],
     "snippets": [

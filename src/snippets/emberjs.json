@@ -48,6 +48,25 @@
     ],
     "description": "Ember classic component"
   },
+  "emberComponentOctaneTS": {
+    "prefix": "ecomponent-ts",
+    "body": [
+      "import Component from '@glimmer/component';",
+      "import { action } from '@ember/object';",
+      "",
+      "interface ${1:ComponentName}Args {",
+      "  ${2:// Define component arguments}",
+      "}",
+      "",
+      "export default class ${1:ComponentName} extends Component<${1:ComponentName}Args> {",
+      "  @action",
+      "  ${3:handleAction}(): void {",
+      "    ${4:// Action implementation}",
+      "  }",
+      "}"
+    ],
+    "description": "Ember Octane component class with TypeScript"
+  },
   "emberRouteOctane": {
     "prefix": "eroute",
     "body": [

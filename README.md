@@ -1,6 +1,7 @@
 # Ember Productivity
 
-This extension provides a collection of Ember JS and Handlebars snippets for the [Visual Studio Code][code] editor. It also supports easy switching between related Ember files and layouts.
+This extension enhances your workflow with easy switching between related Ember files and layouts in [Visual Studio Code](https://code.visualstudio.com/). It also includes a collection of Ember JS and Handlebars snippets to streamline your development process.
+
 
 ## Switch Related Files
 
@@ -10,15 +11,15 @@ This extension provides a collection of Ember JS and Handlebars snippets for the
 
 The Ember Productivity Addon includes keybindings to easily switch between related files:
 
-- **Mac:** `Cmd + Alt + R`
-- **Win/Linux:** `Ctrl + Alt + R`
-  
+- **Mac:** `Cmd + R`
+- **Win/Linux:** `Ctrl + R`
+
 ### File Switches
 
 - **Route → Controller → Template**
 - **Component → Template**
-  
-## Supported Layou
+
+## Supported Layouts
 
 - **Classic**
 - **Pods**
@@ -29,9 +30,9 @@ The Ember Productivity Addon includes keybindings to easily switch between relat
 * TypeScript (.ts)
 * Handlebars (.hbs)
 
-## Handlebars Snippets
+## Handlebars Snippets CheatSheet
 
-Below is a list of all available Handlebars snippets and their triggers. The **⇥** represents the `TAB` key.
+Below is a list of available Handlebars snippets and their triggers. The **⇥** represents the `TAB` key.
 
 ![code-snippets](https://raw.githubusercontent.com/kavinkumar999/ember-productivity/main/images/snippets.gif)
 
@@ -59,61 +60,298 @@ Below is a list of all available Handlebars snippets and their triggers. The **�
 | `yield`         | `{{yield ${1:defaultContent}}}`                   |
 | `concat`        | `{{concat ${1:string1} ${2:string2}}}`            |
 
-## JavaScript (ES6) Snippets
+## JavaScript / TypeScript Ember file CheatSheet
+# Ember Snippets
 
-Below is a list of all available JavaScript snippets and their triggers. The **⇥** represents the `TAB` key.
+### Ember Computed Properties
 
-### Functions
+#### Ember Computed Property (Modern)
 
-| Trigger         | Content                                             |
-| --------------- | --------------------------------------------------- |
-| `func`          | `function ${1:functionName}() { ${2} }`           |
-| `func1`         | `function ${1:functionName}(${2:param}) { ${3} }` |
-| `func2`         | `function ${1:functionName}(${2:param1}, ${3:param2}) { ${4} }` |
-| `func3`         | `function ${1:functionName}(${2:param1}, ${3:param2}, ${4:param3}) { ${5} }` |
+**Trigger**: `ecomputed`
 
-### Computed Properties
+```javascript
+get ${1:computedPropertyName}() {
+  return ${2:// Computed property implementation};
+}
+```
 
-| Trigger         | Content                                             |
-| --------------- | --------------------------------------------------- |
-| `cu`            | `${1:computedPropertyName}: computed('${2:propertyToBeWatched}', function() { return ${3}; })` |
-| `cugs`          | `${1:computedPropertyName}: computed('${2:propertyToBeWatched}', { get() { ${3} }, set(key, value) { ${4} } })` |
+#### Ember Computed Property (Classic)
 
-### Imports
+**Trigger**: `ecomputed-classic`
 
-| Trigger         | Content                                             |
-| --------------- | --------------------------------------------------- |
-| `imp rsvp`      | `import { ${1:module} } from '@ember/rsvp';`       |
-| `imp utils`     | `import { ${1:module} } from '@ember/utils';`      |
-| `imp service`   | `import { service } from '@ember/service';`        |
-| `imp object`    | `import { ${1:module} } from '@ember/object';`     |
-| `imp comp`      | `import { ${1:module} } from '@ember/object/computed';` |
+```javascript
+${1:computedPropertyName}: computed('${2:dependentKey}', function() {
+  return ${3:// Computed property implementation};
+})
+```
 
-### Class Methods
+### Ember Components
 
-| Trigger         | Content                                             |
-| --------------- | --------------------------------------------------- |
-| `efunc`         | `${1:methodName}() { ${2} }`                       |
-| `efunc1`        | `${1:methodName}(${2:param}) { ${3} }`             |
-| `efunc2`        | `${1:methodName}(${2:param1}, ${3:param2}) { ${4} }` |
-| `efunc3`        | `${1:methodName}(${2:param1}, ${3:param2}, ${4:param3}) { ${5} }` |
+#### Ember Component (Octane)
 
-### Ember Components & Classes
+**Trigger**: `ecomponent`
 
-| Trigger         | Content                                             |
-| --------------- | --------------------------------------------------- |
-| `comp-g`        | `import Component from '@glimmer/component'; export default class ${1:ComponentName} extends Component { ${2} }` |
-| `comp`          | `import Component from '@ember/component'; export default Component.extend({ ${1} });` |
-| `route-g`       | `import Route from '@ember/routing/route'; export default class ${1:RouteName} extends Route { model() { ${2} } }` |
-| `route`         | `import Route from '@ember/routing/route'; export default Route.extend({ model() { ${1} } });` |
-| `service-g`     | `import Service from '@ember/service'; export default class ${1:ServiceName} extends Service { ${2} }` |
-| `service`       | `import Service from '@ember/service'; export default Service.extend({ ${1} });` |
-| `controller-g`  | `import Controller from '@ember/controller'; export default class ${1:ControllerName} extends Controller { ${2} }` |
-| `controller`    | `import Controller from '@ember/controller'; export default Controller.extend({ ${1} });` |
-| `comp-ts`       | `import Component from '@glimmer/component'; interface ${1:ComponentName}Args { // Define your component arguments here } export default class ${1:ComponentName} extends Component<${1:ComponentName}Args> { // Component logic here }` |
+```javascript
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
-## Contribute
+export default class ${1:ComponentName} extends Component {
+  @action
+  ${2:handleAction}() {
+    ${3:// Action implementation}
+  }
+}
+```
 
-Contributions are welcome! Feel free to submit more snippets or modify existing ones.
+#### Ember Component (Classic)
 
-[code]: https://code.visualstudio.com/
+**Trigger**: `ecomponent-classic`
+
+```javascript
+import Component from '@ember/component';
+
+export default Component.extend({
+  ${1:// component properties and methods}
+  actions: {
+    ${2:actionName}() {
+      ${3:// Action implementation}
+    }
+  }
+});
+```
+
+#### Ember Component (Octane with TypeScript)
+
+**Trigger**: `ecomponent-ts`
+
+```javascript
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+
+interface ${1:ComponentName}Args {
+  ${2:// Define component arguments}
+}
+
+export default class ${1:ComponentName} extends Component<${1:ComponentName}Args> {
+  @action
+  ${3:handleAction}(): void {
+    ${4:// Action implementation}
+  }
+}
+```
+
+### Ember Routes
+
+#### Ember Route (Octane)
+
+**Trigger**: `eroute`
+
+```javascript
+import Route from '@ember/routing/route';
+
+export default class ${1:RouteName} extends Route {
+  async model(params) {
+    ${2:// Fetch and return the model}
+  }
+}
+```
+
+#### Ember Route (Classic)
+
+**Trigger**: `eroute-classic`
+
+```javascript
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model(params) {
+    ${1:// Fetch and return the model}
+  }
+});
+```
+
+### Ember Controllers
+
+#### Ember Controller (Octane)
+
+**Trigger**: `econtroller`
+
+```javascript
+import Controller from '@ember/controller';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+
+export default class ${1:ControllerName} extends Controller {
+  @tracked ${2:property} = ${3:initialValue};
+
+  @action
+  ${4:handleAction}() {
+    ${5:// Action implementation}
+  }
+}
+```
+
+#### Ember Controller (Classic)
+
+**Trigger**: `econtroller-classic`
+
+```javascript
+import Controller from '@ember/controller';
+import { computed } from '@ember/object';
+
+export default Controller.extend({
+  ${1:property}: null,
+
+  ${2:computedProperty}: computed('${3:dependentKey}', function() {
+    ${4:// Computed property implementation}
+  }),
+
+  actions: {
+    ${5:actionName}() {
+      ${6:// Action implementation}
+    }
+  }
+});
+```
+
+### Ember Services
+
+#### Ember Service (Octane)
+
+**Trigger**: `eservice`
+
+```javascript
+import Service from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+
+export default class ${1:ServiceName} extends Service {
+  @tracked ${2:property} = ${3:initialValue};
+
+  ${4:methodName}() {
+    ${5:// Method implementation}
+  }
+}
+```
+
+#### Ember Service (Classic)
+
+**Trigger**: `eservice-classic`
+
+```javascript
+import Service from '@ember/service';
+
+export default Service.extend({
+  ${1:property}: null,
+
+  ${2:methodName}() {
+    ${3:// Method implementation}
+  }
+});
+```
+
+### Ember Helpers
+
+#### Ember Helper (Octane)
+
+**Trigger**: `ehelper`
+
+```javascript
+import { helper } from '@ember/component/helper';
+
+function ${1:helperName}([${2:param1}, ${3:param2}], hash) {
+  ${4:// Helper implementation}
+}
+
+export default helper(${1:helperName});
+```
+
+#### Ember Helper (Classic)
+
+**Trigger**: `ehelper-classic`
+
+```javascript
+import { helper } from '@ember/component/helper';
+
+export function ${1:helperName}([${2:param1}, ${3:param2}], hash) {
+  ${4:// Helper implementation}
+}
+
+export default helper(${1:helperName});
+```
+
+### Ember Actions
+
+#### Ember Action (Octane)
+
+**Trigger**: `eaction`
+
+```javascript
+@action
+${1:actionName}(${2:event}) {
+  ${3:// Action implementation}
+}
+```
+
+#### Ember Action (Classic)
+
+**Trigger**: `eaction-classic`
+
+```javascript
+actions: {
+  ${1:actionName}(${2:event}) {
+    ${3:// Action implementation}
+  }
+}
+```
+
+### Ember Tests
+
+#### Ember Test (Octane)
+
+**Trigger**: `etest`
+
+```javascript
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
+
+module('${1:ModuleName}', function(hooks) {
+  setupTest(hooks);
+
+  test('${2:it does something}', async function(assert) {
+    ${3:// Test implementation}
+    assert.ok(true);
+  });
+});
+```
+
+### Ember Models
+
+#### Ember Model (Octane)
+
+**Trigger**: `emodel`
+
+```javascript
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+
+export default class ${1:ModelName} extends Model {
+  @attr('string') ${2:attribute1};
+  @attr('number') ${3:attribute2};
+  @belongsTo('${4:otherModel}') ${5:relationship1};
+  @hasMany('${6:anotherModel}') ${7:relationship2};
+}
+```
+
+#### Ember Model (Classic)
+
+**Trigger**: `emodel-classic`
+
+```javascript
+import DS from 'ember-data';
+
+export default DS.Model.extend({
+  ${1:attribute1}: DS.attr('string'),
+  ${2:attribute2}: DS.attr('number'),
+  ${3:relationship1}: DS.belongsTo('${4:otherModel}'),
+  ${5:relationship2}: DS.hasMany('${6:anotherModel}')
+});
+```
