@@ -24,7 +24,7 @@ export const regexTypes = [
   { module: 'classic-route-integration', exp: /(.+?)(tests\/integration\/routes\/(.+?)-test\.(js|ts))$/ },
 
   { module: 'classic-controller-controller', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-controller-unit', exp: /(.+?)(tests\/unit\/controllers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-controller-unit', exp: /(.+?)(tests\/unit\/controllers)\/(.+?)-test\.(js|ts)$/ },
   { module: 'classic-controller-integration', exp: /(.+?)(tests\/integration\/controllers\/(.+?)-test\.(js|ts))$/ },
   { module: 'classic-controller-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/templates\/(.+?)\.(hbs)$/ },
 
@@ -70,10 +70,13 @@ function detectType (relativeFilePath: string): Type | undefined {
       const m = relativeFilePath.match(type.exp);
 
       if (m) {
-        const appRoot = m[1];
-        const hostType = m[2];
-        const name = m[3];
-        const ext = m[4];
+        let appRoot = m[1];
+        let hostType = m[2];
+        let name = m[3];
+        let ext = m[4];
+        if (hostType.startsWith('tests')) {
+          hostType = 'app';
+        }
 
         return { appRoot, hostType, path: relativeFilePath, name, key: `${type.module}-${ext}` };
       }
@@ -155,7 +158,7 @@ function getPath (sourceType: Type, typeKey: string): string {
     switch (subtype) {
       case 'integration':
       case 'unit':
-        return `tests/${subtype}/${type}s/${name}/${type}-test.${ext}`;
+        return `${appRoot}${hostType}/tests/${subtype}/${type}s/${name}/${type}-test.${ext}`;
       default:
         return `${appRoot}${hostType}/${subtype || type}.${ext}`;
     }
@@ -163,7 +166,7 @@ function getPath (sourceType: Type, typeKey: string): string {
     switch (subtype) {
       case 'integration':
       case 'unit':
-        return `tests/${subtype}/${type}s/${name}-test.${ext}`;
+        return `${appRoot}/tests/${subtype}/${type}s/${name}-test.${ext}`;
       case 'style':
         return `${appRoot}${hostType}/styles/${type}s/${name}.${ext}`;
       case 'template':
