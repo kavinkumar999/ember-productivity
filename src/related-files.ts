@@ -3,14 +3,14 @@ import fs from 'fs';
 
 export const regexTypes = [
   // Pod Components
-  { module: 'pod-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(component)\.(js|ts)$/ },
-  { module: 'pod-component-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(template)\.(hbs)$/ },
-  { module: 'pod-component-style', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-component', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(component)\.(js|ts)$/ },
+  { module: 'pod-component-template', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(template)\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/style\.(css|sass|scss)$/ },
   { module: 'pod-component-unit', exp: /(.+?)(tests\/unit\/(.+?)\/component-test\.(js|ts))$/ },
   { module: 'pod-component-integration', exp: /(.+?)(tests\/integration\/(.+?)\/component-test\.(js|ts))$/ },
 
-  { module: 'pod-route-route', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(route)\.(js|ts)$/ },
-  { module: 'pod-controller-controller', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon\/(?:.+))\/(controller)\.(js|ts)$/ },
+  { module: 'pod-route-route', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(route)\.(js|ts)$/ },
+  { module: 'pod-controller-controller', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(controller)\.(js|ts)$/ },
 
   // Classic Components
   { module: 'classic-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(js|ts)$/ },
