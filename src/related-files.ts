@@ -11,6 +11,8 @@ export const regexTypes = [
 
   { module: 'pod-route-route', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(route)\.(js|ts)$/ },
   { module: 'pod-controller-controller', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(controller)\.(js|ts)$/ },
+  // Colocation Components
+  { module: 'colocation-component-template', exp:  /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(hbs)$/ },
 
   // Classic Components
   { module: 'classic-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(js|ts)$/ },
@@ -47,9 +49,10 @@ export const regexTypes = [
 
 const groups = [
   ['pod-controller-controller-js', 'pod-route-route-js', 'pod-controller-unit-js', 'pod-controller-integration-js', 'pod-route-unit-js', 'pod-route-integration-js', 'pod-component-component-js', 'pod-component-template-hbs', 'pod-component-style-css', 'pod-component-style-sass', 'pod-component-style-scss', 'pod-component-unit-js', 'pod-component-integration-js'],
-  ['classic-component-component-js', 'classic-component-template-hbs', 'classic-component-style-css', 'classic-component-style-sass', 'classic-component-style-scss', 'classic-component-unit-js', 'classic-component-integration-js'],
+  ['colocation-component-template-hbs', 'classic-component-component-js', 'classic-component-template-hbs', 'classic-component-style-css', 'classic-component-style-sass', 'classic-component-style-scss', 'classic-component-unit-js', 'classic-component-integration-js'],
   ['classic-controller-controller-js', 'classic-controller-template-hbs', 'classic-route-route-js', 'classic-controller-unit-js', 'classic-controller-integration-js', 'classic-route-unit-js', 'classic-route-integration-js'],
   ['classic-helper-helper-js', 'classic-helper-unit-js', 'classic-helper-integration-js'],
+  ['colocation-component-component-js', 'colocation-component-template-hbs'],
   ['classic-service-service-js', 'classic-service-unit-js', 'classic-service-integration-js']
 ].map(group => {
   const typescript = group.filter(i => i.endsWith('-js')).map(jsItem => jsItem.replace('-js', '-ts'));
@@ -93,6 +96,7 @@ function getRelatedKeys (key: string): string[] {
 
 function typeKeyToLabel (typeKey: string): string {
   switch (typeKey) {
+    case 'colocation-component-component':
     case 'pod-component-component':
     case 'classic-component-component':
       return 'Component';
@@ -121,6 +125,7 @@ function typeKeyToLabel (typeKey: string): string {
       return 'Service';
 
     case 'pod-component-template':
+    case 'colocation-component-template':
     case 'classic-component-template':
     case 'pod-template-template':
     case 'classic-template-template':
@@ -161,6 +166,30 @@ function getPath (sourceType: Type, typeKey: string): string {
         return `${appRoot}${hostType}/tests/${subtype}/${type}s/${name}/${type}-test.${ext}`;
       default:
         return `${appRoot}${hostType}/${subtype || type}.${ext}`;
+    }
+  } else if(ispod === 'classic') {
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `${appRoot}/tests/${subtype}/${type}s/${name}-test.${ext}`;
+      case 'style':
+        return `${appRoot}${hostType}/styles/${type}s/${name}.${ext}`;
+      case 'template':
+        if (type === 'controller') {
+          return `${appRoot}${hostType}/templates/${name}.${ext}`;
+        } else {
+          return `${appRoot}${hostType}/templates/${type}s/${name}.${ext}`;
+        }
+      default:
+        return `${appRoot}${hostType}/${type}s/${name}.${ext}`;
+    }
+  } else if(ispod === 'colocation') {
+    switch (subtype) {
+      case 'integration':
+      case 'unit':
+        return `${appRoot}${hostType}/tests/${type}s/${name}-test.${ext}`;
+      default:
+        return `${appRoot}${hostType}/${type}s/${name}.${ext}`;
     }
   } else {
     switch (subtype) {
