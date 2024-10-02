@@ -59,7 +59,7 @@ async function switchRelatedFiles() {
   let rootPath = workspace.rootPath || '';
   let relativeFileName = workspace.asRelativePath(window?.activeTextEditor?.document?.fileName || '');
 
-	const files: Array<TypeItem> = findRelatedFiles(rootPath, relativeFileName);
+	const files: Array<TypeItem> = await findRelatedFiles(rootPath, relativeFileName);
 
   if (files.length === 0) {
     window.showInformationMessage('No related files found.');

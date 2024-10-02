@@ -52,7 +52,6 @@ const groups = [
   ['colocation-component-template-hbs', 'classic-component-component-js', 'classic-component-template-hbs', 'classic-component-style-css', 'classic-component-style-sass', 'classic-component-style-scss', 'classic-component-unit-js', 'classic-component-integration-js'],
   ['classic-controller-controller-js', 'classic-controller-template-hbs', 'classic-route-route-js', 'classic-controller-unit-js', 'classic-controller-integration-js', 'classic-route-unit-js', 'classic-route-integration-js'],
   ['classic-helper-helper-js', 'classic-helper-unit-js', 'classic-helper-integration-js'],
-  ['colocation-component-component-js', 'colocation-component-template-hbs'],
   ['classic-service-service-js', 'classic-service-unit-js', 'classic-service-integration-js']
 ].map(group => {
   const typescript = group.filter(i => i.endsWith('-js')).map(jsItem => jsItem.replace('-js', '-ts'));
@@ -96,7 +95,6 @@ function getRelatedKeys (key: string): string[] {
 
 function typeKeyToLabel (typeKey: string): string {
   switch (typeKey) {
-    case 'colocation-component-component':
     case 'pod-component-component':
     case 'classic-component-component':
       return 'Component';
@@ -209,19 +207,21 @@ function getPath (sourceType: Type, typeKey: string): string {
     }
   }
 }
-export function findRelatedFiles(rootPath: string, relativeFilePath: string): Array<TypeItem> {
+export async function findRelatedFiles(rootPath: string, relativeFilePath: string):Promise<Array<TypeItem>> {
   
   let type = detectType(relativeFilePath);
   if (!type) { return []; }
 
   let relatedKeys =  getRelatedKeys(type.key);
 
-  return relatedKeys.map((key) => {
+  const filePromises = relatedKeys.map((key) => {
     let _key = key.split('-').slice(0, 3).join('-');
     return {
       label: typeKeyToLabel(_key),
       path: getPath(type, key)
     };
   }).map((item) => new TypeItem(item, rootPath)).filter((item) => fs.existsSync(item.rootPath));
+
+  return await Promise.all(filePromises);
 
 }
