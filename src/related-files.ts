@@ -3,48 +3,48 @@ import fs from 'fs';
 
 export const regexTypes = [
   // Pod Components
-  { module: 'pod-component-component', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(component)\.(js|ts)$/ },
-  { module: 'pod-component-template', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(template)\.(hbs)$/ },
-  { module: 'pod-component-style', exp: /(.+?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/style\.(css|sass|scss)$/ },
-  { module: 'pod-component-unit', exp: /(.+?)(tests\/unit\/(.+?)\/component-test\.(js|ts))$/ },
-  { module: 'pod-component-integration', exp: /(.+?)(tests\/integration\/(.+?)\/component-test\.(js|ts))$/ },
+  { module: 'pod-component-component', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(component)\.(js|ts)$/ },
+  { module: 'pod-component-template', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(template)\.(hbs)$/ },
+  { module: 'pod-component-style', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/style\.(css|sass|scss)$/ },
+  { module: 'pod-component-unit', exp: /(.*?)(tests\/unit\/(.+?)\/component-test\.(js|ts))$/ },
+  { module: 'pod-component-integration', exp: /(.*?)(tests\/integration\/(.+?)\/component-test\.(js|ts))$/ },
 
   { module: 'pod-route-route', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(route)\.(js|ts)$/ },
   { module: 'pod-controller-controller', exp: /(.*?)(app\/(?:.+)|addon|lib\/(?:.+)\/addon\/(?:.+))\/(controller)\.(js|ts)$/ },
   // Colocation Components
-  { module: 'colocation-component-template', exp:  /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(hbs)$/ },
+  { module: 'colocation-component-template', exp:  /(.*?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(hbs)$/ },
 
   // Classic Components
-  { module: 'classic-component-component', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-component-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+?)\.(hbs)$/ },
-  { module: 'classic-component-style', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+?)\.(css|sass|scss)$/ },
-  { module: 'classic-component-unit', exp: /(.+?)(tests\/unit\/components\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-component-integration', exp: /(.+?)(tests\/integration\/components\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-component-component', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/components\/(.+?)\.(js|ts)/ },
+  { module: 'classic-component-template', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/templates\/components\/(.+?)\.(hbs)$/ },
+  { module: 'classic-component-style', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/styles\/components\/(.+?)\.(css|sass|scss)$/ },
+  { module: 'classic-component-unit', exp: /(.*?)(tests\/unit\/components\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-component-integration', exp: /(.*?)(tests\/integration\/components\/(.+?)-test\.(js|ts))$/ },
 
-  { module: 'classic-route-route', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/routes\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-route-unit', exp: /(.+?)(tests\/unit\/routes\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-route-integration', exp: /(.+?)(tests\/integration\/routes\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-route-route', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/routes\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-route-unit', exp: /(.*?)(tests\/unit\/routes\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-route-integration', exp: /(.*?)(tests\/integration\/routes\/(.+?)-test\.(js|ts))$/ },
 
-  { module: 'classic-controller-controller', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-controller-unit', exp: /(.+?)(tests\/unit\/controllers)\/(.+?)-test\.(js|ts)$/ },
-  { module: 'classic-controller-integration', exp: /(.+?)(tests\/integration\/controllers\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-controller-template', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/templates\/(.+?)\.(hbs)$/ },
+  { module: 'classic-controller-controller', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/controllers\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-controller-unit', exp: /(.*?)(tests\/unit\/controllers)\/(.+?)-test\.(js|ts)$/ },
+  { module: 'classic-controller-integration', exp: /(.*?)(tests\/integration\/controllers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-controller-template', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/templates\/(.+?)\.(hbs)$/ },
 
-  { module: 'classic-model-model', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/models\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-model-unit', exp: /(.+?)(tests\/unit\/models\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-model-integration', exp: /(.+?)(tests\/integration\/models\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-model-model', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/models\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-model-unit', exp: /(.*?)(tests\/unit\/models\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-model-integration', exp: /(.*?)(tests\/integration\/models\/(.+?)-test\.(js|ts))$/ },
 
-  { module: 'classic-helper-helper', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/helpers\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-helper-unit', exp: /(.+?)(tests\/unit\/helpers\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-helper-integration', exp: /(.+?)(tests\/integration\/helpers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-helper-helper', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/helpers\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-helper-unit', exp: /(.*?)(tests\/unit\/helpers\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-helper-integration', exp: /(.*?)(tests\/integration\/helpers\/(.+?)-test\.(js|ts))$/ },
 
-  { module: 'classic-mixin-mixin', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/mixins\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-mixin-unit', exp: /(.+?)(tests\/unit\/mixins\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-mixin-integration', exp: /(.+?)(tests\/integration\/mixins\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-mixin-mixin', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/mixins\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-mixin-unit', exp: /(.*?)(tests\/unit\/mixins\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-mixin-integration', exp: /(.*?)(tests\/integration\/mixins\/(.+?)-test\.(js|ts))$/ },
 
-  { module: 'classic-service-service', exp: /(.+?)(app|addon|lib\/(?:.+)\/addon)\/services\/(.+?)\.(js|ts)$/ },
-  { module: 'classic-service-unit', exp: /(.+?)(tests\/unit\/services\/(.+?)-test\.(js|ts))$/ },
-  { module: 'classic-service-integration', exp: /(.+?)(tests\/integration\/services\/(.+?)-test\.(js|ts))$/ }
+  { module: 'classic-service-service', exp: /(.*?)(app|addon|lib\/(?:.+)\/addon)\/services\/(.+?)\.(js|ts)$/ },
+  { module: 'classic-service-unit', exp: /(.*?)(tests\/unit\/services\/(.+?)-test\.(js|ts))$/ },
+  { module: 'classic-service-integration', exp: /(.*?)(tests\/integration\/services\/(.+?)-test\.(js|ts))$/ }
 ];
 
 const groups = [
